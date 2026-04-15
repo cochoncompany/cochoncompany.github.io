@@ -76,7 +76,7 @@ video {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background:
+  /* background:
     linear-gradient(
       180deg,
       rgba(5, 4, 4, 0.28) 0%,
@@ -88,7 +88,7 @@ video {
       rgba(213, 161, 91, 0.16) 0%,
       transparent 40%
     ),
-    var(--overlay);
+    var(--overlay); */
 }
 
 .coming-soon__noise {
