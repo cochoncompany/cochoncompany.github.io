@@ -706,69 +706,70 @@ section {
 }
 
 .footer {
-  margin-top: 80px;
-  padding-top: 60px;
-  background: #0b0503;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  padding: 60px 0 20px;
+  background:
+    linear-gradient(180deg, rgba(10, 5, 3, 0.95), rgba(10, 5, 3, 1)),
+    url("../assets/img/3.jpg") center/cover no-repeat;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(255, 140, 60, 0.15),
+    transparent 60%
+  );
+  pointer-events: none;
 }
 
 .footer__inner {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 32px;
-  padding-bottom: 40px;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 40px;
 }
 
 .footer__brand {
   max-width: 320px;
 }
 
-.footer__brand img {
-  width: 64px;
+.footer__logo {
+  width: 48px;
+  height: auto;
   margin-bottom: 12px;
+  opacity: 0.9;
 }
 
-.footer__brand p,
-.footer__info {
-  font-size: 0.95rem;
-  color: var(--muted);
-  line-height: 1.6;
+.footer__brand p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .footer__info {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-.footer__cta a,
-.whatsapp-float {
-  border-radius: 999px;
-  font-weight: 800;
-}
-
-.footer__cta a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 14px 20px;
-  background: linear-gradient(135deg, #ff8a3c, #ffb36b);
-  color: #1a0b02;
-  transition: transform 0.2s ease;
-}
-
-.footer__cta a:hover {
-  transform: translateY(-2px);
+.footer__cta .btn {
+  padding: 12px 22px;
+  font-size: 14px;
 }
 
 .footer__bottom {
-  border-top: 1px solid rgba(255,255,255,0.06);
+  margin-top: 40px;
+  padding-top: 16px;
   text-align: center;
-  padding: 16px;
-  font-size: 0.85rem;
-  color: var(--muted);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .whatsapp-float {
