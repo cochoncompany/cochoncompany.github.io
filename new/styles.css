@@ -401,13 +401,13 @@ section {
   box-shadow: var(--shadow);
 }
 
-.story__stage::after {
+/* .story__stage::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.55));
-}
+} */
 
 .story__image {
   position: absolute;
@@ -418,7 +418,7 @@ section {
   opacity: 0;
   transform: scale(1.04);
   transition: opacity 0.8s ease, transform 1s ease, filter 0.8s ease;
-  filter: saturate(0.86) brightness(0.78);
+  /* filter: saturate(0.86) brightness(0.78); */
 }
 
 .story__image.is-active {
