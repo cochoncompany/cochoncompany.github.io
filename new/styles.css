@@ -514,7 +514,7 @@ section {
 .benefits::after,
 .process-simple::after,
 .cta::after {
-  background: linear-gradient(180deg, rgba(10, 6, 4, 0.432), rgba(10, 6, 4, 0.884));
+  background: linear-gradient(180deg, rgba(10, 6, 4, 0), rgba(10, 6, 4, 0.95));
   z-index: -1;
 }
 
