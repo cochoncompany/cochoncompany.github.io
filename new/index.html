@@ -2,47 +2,55 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      Perniles en Zona Norte | Perniles Cochon para eventos y cumpleaños
-    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Perniles en Zona Norte | Perniles Cochon para eventos y cumpleaños</title>
     <meta
       name="description"
-      content="Perniles en Zona Norte para eventos, cumpleaños y reuniones. Cocción lenta, sabor real y entrega lista para servir. Pedí por WhatsApp."
+      content="Perniles en Zona Norte para eventos, cumpleaños y reuniones. Cocción lenta real, primera calidad y entrega lista para servir. Pedí tu pernil por WhatsApp."
     />
-    <!-- Basic -->
-    <link rel="icon" href="../assets/img/favicon_io/favicon.ico" sizes="any" />
-
-    <!-- PNG favicons -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="../assets/img/favicon_io/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="../assets/img/favicon_io/favicon-16x16.png"
-    />
-
-    <!-- Apple (iOS) -->
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="../assets/img/favicon_io/apple-touch-icon.png"
-    />
-
-    <!-- Theme color -->
+    <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta name="theme-color" content="#0f0b09" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/modern-css-reset/dist/reset.min.css"
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="canonical" href="https://pernilescochon.com.ar/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Perniles Cochon" />
+    <meta property="og:title" content="Perniles en Zona Norte | Perniles Cochon" />
+    <meta
+      property="og:description"
+      content="Perniles para eventos, cumpleaños y reuniones en Zona Norte. Primera calidad, cocción lenta y entrega lista para servir."
     />
+    <meta property="og:url" content="https://pernilescochon.com.ar/" />
+    <meta property="og:image" content="https://pernilescochon.com.ar/assets/img/8.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="../assets/img/favicon_io/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon_io/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon_io/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/img/favicon_io/apple-touch-icon.png" />
+    <link rel="preload" as="image" href="../assets/img/7.jpg" fetchpriority="high" />
     <link rel="stylesheet" href="../new/styles.css" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FoodEstablishment",
+        "name": "Perniles Cochon",
+        "image": "https://pernilescochon.com.ar/assets/img/8.jpg",
+        "url": "https://pernilescochon.com.ar/",
+        "telephone": "+54 9 11 3644-1214",
+        "servesCuisine": "Perniles para eventos",
+        "areaServed": {
+          "@type": "Place",
+          "name": "Zona Norte, Buenos Aires, Argentina"
+        },
+        "description": "Perniles en Zona Norte para eventos, cumpleaños y reuniones. Cocción lenta real, primera calidad y entrega lista para servir."
+      }
+    </script>
   </head>
   <body>
+    <a class="skip-link" href="#inicio">Saltar al contenido</a>
+
     <header class="topbar">
       <div class="container topbar__inner">
         <a class="brand" href="#inicio" aria-label="Perniles Cochon">
@@ -50,10 +58,14 @@
             src="../assets/img/logo-removebg-preview.png"
             alt="Logo de Perniles Cochon"
             class="brand__logo"
+            width="74"
+            height="74"
+            fetchpriority="high"
+            decoding="async"
           />
           <div class="brand__text">
             <span class="brand__name">Perniles Cochon</span>
-            <span class="brand__sub">Perniles artesanales</span>
+            <span class="brand__sub">Perniles en Zona Norte</span>
           </div>
         </a>
 
@@ -71,29 +83,28 @@
       </div>
     </header>
 
-    <main>
-      <section class="hero" id="inicio">
-        <div class="hero__media">
-          <video autoplay muted loop playsinline poster="../assets/img/7.jpg">
+    <main id="inicio">
+      <section class="hero" aria-label="Perniles para eventos en Zona Norte">
+        <div class="hero__media" aria-hidden="true">
+          <video autoplay muted loop playsinline preload="metadata" poster="../assets/img/7.jpg">
             <source src="../assets/video/video.mp4" type="video/mp4" />
           </video>
         </div>
         <div class="hero__overlay"></div>
         <div class="hero__noise"></div>
-        <span class="smoke smoke--1"></span>
-        <span class="smoke smoke--2"></span>
-        <span class="smoke smoke--3"></span>
+        <span class="smoke smoke--1" aria-hidden="true"></span>
+        <span class="smoke smoke--2" aria-hidden="true"></span>
+        <span class="smoke smoke--3" aria-hidden="true"></span>
 
         <div class="container hero__content">
-          <div class="eyebrow">
-            Perniles en Zona Norte · Eventos · Cumpleaños · Primera calidad
-          </div>
+          <div class="eyebrow">Perniles en Zona Norte · Eventos · Cumpleaños · Primera calidad</div>
+
           <h1>Perniles que <span>se roban la mesa</span></h1>
+
           <p class="hero__lead">
-            En Perniles Cochon hacemos perniles artesanales en Zona Norte con
-            cocción lenta real, ideales para eventos, cumpleaños y reuniones
-            donde la comida tiene que destacar. Producto abundante, sabor
-            garantizado y entrega lista para servir.
+            En Perniles Cochon hacemos perniles artesanales en Zona Norte con cocción lenta real,
+            ideales para eventos, cumpleaños y reuniones donde la comida tiene que destacar.
+            Producto abundante, sabor garantizado y entrega lista para servir.
           </p>
 
           <div class="hero__actions">
@@ -103,41 +114,30 @@
               target="_blank"
               rel="noreferrer"
             >
-              Pedir pernil por WhatsApp</a
-            >
-            <a class="btn btn--ghost" href="#proceso"
-              >Ver cómo hacemos los perniles</a
-            >
+              Pedir pernil por WhatsApp
+            </a>
+            <a class="btn btn--ghost" href="#proceso">Ver cómo hacemos los perniles</a>
           </div>
 
-          <div class="hero__proof">
+          <div class="hero__proof" aria-label="Datos clave del servicio">
             <span class="tag">Desde $X</span>
-            <span class="tag">Zona Norte</span>
             <span class="tag">+20 personas</span>
+            <span class="tag">Zona Norte</span>
             <span class="tag">Listo para servir</span>
           </div>
 
           <div class="hero__card fade-up">
             <article class="stat">
               <strong>El pernil más elegido en Zona Norte</strong>
-              <span>
-                Calidad constante, sabor real y un producto que hace que todos
-                pregunten quién lo hizo.
-              </span>
+              <span>Calidad constante, sabor real y un producto que hace que todos pregunten quién lo hizo.</span>
             </article>
             <article class="stat">
               <strong>Pedís rápido y resolvés mejor</strong>
-              <span>
-                Coordinás por WhatsApp en minutos y asegurás la comida con una
-                marca que cumple.
-              </span>
+              <span>Coordinás por WhatsApp en minutos y asegurás la comida con una marca que cumple.</span>
             </article>
             <article class="stat">
               <strong>Pensado para eventos que importan</strong>
-              <span>
-                Rendidor, abundante y listo para servir en cumpleaños, reuniones
-                y eventos grandes.
-              </span>
+              <span>Rendidor, abundante y listo para servir en cumpleaños, reuniones y eventos grandes.</span>
             </article>
           </div>
         </div>
@@ -146,48 +146,22 @@
       <section class="story" id="proceso">
         <div class="container">
           <div class="section-head fade-up">
-            <div class="eyebrow">
-              Perniles en Zona Norte · Proceso artesanal real
-            </div>
-
+            <div class="eyebrow">Perniles en Zona Norte · Proceso artesanal real</div>
             <h2>Cómo hacemos los mejores perniles de Zona Norte</h2>
-
             <p>
-              Nuestros perniles en Zona Norte se preparan con cocción lenta,
-              horno real y técnica artesanal. Cada etapa está pensada para
-              lograr un pernil jugoso, sabroso y consistente, ideal para
-              eventos, cumpleaños y reuniones donde la calidad no se negocia.
+              Nuestros perniles en Zona Norte se preparan con cocción lenta, horno real y técnica artesanal.
+              Cada etapa está pensada para lograr un pernil jugoso, sabroso y consistente, ideal para eventos,
+              cumpleaños y reuniones donde la calidad no se negocia.
             </p>
           </div>
 
           <div class="story__wrap">
             <div class="story__sticky fade-up">
               <div class="story__stage">
-                <img
-                  class="story__image is-active"
-                  src="../assets/img/4.jpg"
-                  alt="Perniles envueltos y preparados para cocción en Zona Norte"
-                  data-story-image="0"
-                />
-                <img
-                  class="story__image"
-                  src="../assets/img/9.jpg"
-                  alt="Perniles en horno con cocción lenta"
-                  data-story-image="1"
-                />
-                <img
-                  class="story__image"
-                  src="../assets/img/2.jpg"
-                  alt="Pernil cocinándose envuelto en aluminio"
-                  data-story-image="2"
-                />
-                <img
-                  class="story__image"
-                  src="../assets/img/3.jpg"
-                  alt="Pernil dorado recién salido del horno"
-                  data-story-image="3"
-                />
-
+                <img class="story__image is-active" src="../assets/img/4.jpg" alt="Perniles envueltos y preparados para cocción en Zona Norte" data-story-image="0" decoding="async" />
+                <img class="story__image" src="../assets/img/9.jpg" alt="Perniles en horno con cocción lenta" data-story-image="1" loading="lazy" decoding="async" />
+                <img class="story__image" src="../assets/img/2.jpg" alt="Pernil cocinándose envuelto en aluminio" data-story-image="2" loading="lazy" decoding="async" />
+                <img class="story__image" src="../assets/img/3.jpg" alt="Pernil dorado recién salido del horno" data-story-image="3" loading="lazy" decoding="async" />
                 <div class="story__glow"></div>
               </div>
             </div>
@@ -197,9 +171,8 @@
                 <div class="step__n">1</div>
                 <h3>Se prepara y se envuelve</h3>
                 <p>
-                  Cada pernil se trabaja con técnica y cuidado. Se envuelve para
-                  concentrar jugos y asegurar una cocción pareja que después se
-                  nota en cada corte.
+                  Cada pernil se trabaja con técnica y cuidado. Se envuelve para concentrar jugos y asegurar
+                  una cocción pareja que después se nota en cada corte.
                 </p>
               </article>
 
@@ -207,9 +180,8 @@
                 <div class="step__n">2</div>
                 <h3>Cocción lenta en horno real</h3>
                 <p>
-                  Fuego bajo, tiempo y control. Así logramos perniles en Zona
-                  Norte con sabor profundo, textura tierna y un resultado
-                  consistente en cada pedido.
+                  Fuego bajo, tiempo y control. Así logramos perniles en Zona Norte con sabor profundo,
+                  textura tierna y un resultado consistente en cada pedido.
                 </p>
               </article>
 
@@ -217,9 +189,8 @@
                 <div class="step__n">3</div>
                 <h3>Sale dorado, jugoso y listo</h3>
                 <p>
-                  Costra crocante, interior jugoso y ese punto exacto que define
-                  un pernil de primera calidad. El momento donde ya sabés que
-                  elegiste bien.
+                  Costra crocante, interior jugoso y ese punto exacto que define un pernil de primera calidad.
+                  El momento donde ya sabés que elegiste bien.
                 </p>
               </article>
 
@@ -227,9 +198,8 @@
                 <div class="step__n">4</div>
                 <h3>Se sirve y domina la mesa</h3>
                 <p>
-                  Llega listo para cortar, servir y convertirse en lo mejor del
-                  evento. Por eso nuestros perniles son la elección líder en
-                  Zona Norte.
+                  Llega listo para cortar, servir y convertirse en lo mejor del evento.
+                  Por eso nuestros perniles son la elección líder en Zona Norte.
                 </p>
               </article>
             </div>
@@ -240,44 +210,29 @@
       <section class="benefits">
         <div class="container">
           <div class="section-head fade-up">
-            <div class="eyebrow">
-              Perniles en Zona Norte · Primera calidad garantizada
-            </div>
-
+            <div class="eyebrow">Perniles en Zona Norte · Primera calidad garantizada</div>
             <h2>El estándar de perniles para eventos en Zona Norte</h2>
-
             <p>
-              Nuestros perniles en Zona Norte están pensados para eventos,
-              cumpleaños y reuniones donde la comida tiene que cumplir en serio.
-              Más sabor, más rendimiento y una presentación que convierte al
-              pernil en el protagonista de la mesa.
+              Nuestros perniles en Zona Norte están pensados para eventos, cumpleaños y reuniones
+              donde la comida tiene que cumplir en serio. Más sabor, más rendimiento y una presentación
+              que convierte al pernil en el protagonista de la mesa.
             </p>
           </div>
 
           <div class="benefits__grid">
             <article class="card fade-up">
               <h3>Perniles con cocción lenta real</h3>
-              <p>
-                No es marketing. Es tiempo, horno y técnica para lograr un
-                pernil jugoso, tierno y con sabor profundo en cada porción.
-              </p>
+              <p>No es marketing. Es tiempo, horno y técnica para lograr un pernil jugoso, tierno y con sabor profundo en cada porción.</p>
             </article>
 
             <article class="card fade-up">
               <h3>Perniles que rinden en eventos grandes</h3>
-              <p>
-                Diseñados para reuniones de más de 20 personas donde la comida
-                tiene que alcanzar, sobrar y dejar a todos satisfechos.
-              </p>
+              <p>Diseñados para reuniones de más de 20 personas donde la comida tiene que alcanzar, sobrar y dejar a todos satisfechos.</p>
             </article>
 
             <article class="card fade-up">
               <h3>Perniles listos para servir sin complicaciones</h3>
-              <p>
-                Se entregan calientes, listos para cortar y armar. Una solución
-                real para eventos donde necesitás resolver la comida rápido y
-                bien.
-              </p>
+              <p>Se entregan calientes, listos para cortar y armar. Una solución real para eventos donde necesitás resolver la comida rápido y bien.</p>
             </article>
           </div>
         </div>
@@ -286,23 +241,18 @@
       <section class="product-finished">
         <div class="container">
           <div class="section-head fade-up">
-            <div class="eyebrow">
-              Perniles en Zona Norte · Producto terminado
-            </div>
-
+            <div class="eyebrow">Perniles en Zona Norte · Producto terminado</div>
             <h2>Perniles listos para servir que marcan la diferencia</h2>
-
             <p>
-              Así llegan nuestros perniles en Zona Norte: dorados, jugosos y
-              listos para cortar y servir. Ideales para eventos, cumpleaños y
-              reuniones donde la comida tiene que impactar, rendir y convertirse
-              en lo más comentado de la mesa.
+              Así llegan nuestros perniles en Zona Norte: dorados, jugosos y listos para cortar y servir.
+              Ideales para eventos, cumpleaños y reuniones donde la comida tiene que impactar,
+              rendir y convertirse en lo más comentado de la mesa.
             </p>
           </div>
 
           <div class="gallery">
             <article class="gallery__item fade-up">
-              <img src="../assets/img/8.jpg" />
+              <img src="../assets/img/8.jpg" alt="Pernil dorado con costra crocante" loading="lazy" decoding="async" />
               <div class="gallery__overlay">
                 <strong>Pernil dorado con costra crocante</strong>
                 <span>El estándar de calidad que nos diferencia.</span>
@@ -310,7 +260,7 @@
             </article>
 
             <article class="gallery__item fade-up">
-              <img src="../assets/img/desmenuzado.JPG" />
+              <img src="../assets/img/desmenuzado.JPG" alt="Pernil desmenuzado jugoso" loading="lazy" decoding="async" />
               <div class="gallery__overlay">
                 <strong>Pernil desmenuzado jugoso</strong>
                 <span>Textura y sabor pensados para rendir en eventos.</span>
@@ -318,7 +268,7 @@
             </article>
 
             <article class="gallery__item fade-up">
-              <img src="../assets/img/armado.JPG" />
+              <img src="../assets/img/armado.JPG" alt="Armado de sandwiches de pernil" loading="lazy" decoding="async" />
               <div class="gallery__overlay">
                 <strong>Armado de sandwiches en el momento</strong>
                 <span>La forma más fácil y efectiva de servir un pernil.</span>
@@ -326,7 +276,7 @@
             </article>
 
             <article class="gallery__item fade-up">
-              <img src="../assets/img/panes.JPG" />
+              <img src="../assets/img/panes.JPG" alt="Panes listos para acompañar pernil" loading="lazy" decoding="async" />
               <div class="gallery__overlay">
                 <strong>Panes listos para acompañar</strong>
                 <span>Todo preparado para una experiencia completa.</span>
@@ -334,12 +284,10 @@
             </article>
 
             <article class="gallery__item fade-up">
-              <img src="../assets/img/salsas.JPG" />
+              <img src="../assets/img/salsas.JPG" alt="Salsas para pernil" loading="lazy" decoding="async" />
               <div class="gallery__overlay">
                 <strong>Salsas que elevan cada bocado</strong>
-                <span
-                  >El detalle que completa el mejor pernil de Zona Norte.</span
-                >
+                <span>El detalle que completa el mejor pernil de Zona Norte.</span>
               </div>
             </article>
           </div>
@@ -349,76 +297,45 @@
       <section class="occasion">
         <div class="container">
           <div class="section-head fade-up">
-            <div class="eyebrow">
-              Perniles en Zona Norte · Eventos · Cumpleaños
-            </div>
-
-            <h2>
-              Perniles para eventos donde la comida tiene que estar a la altura
-            </h2>
-
+            <div class="eyebrow">Perniles en Zona Norte · Eventos · Cumpleaños</div>
+            <h2>Perniles para eventos donde la comida tiene que estar a la altura</h2>
             <p>
-              Nuestros perniles en Zona Norte están pensados para cumpleaños,
-              reuniones familiares, eventos y encuentros donde la comida no
-              puede fallar. Producto abundante, sabor real y una presencia que
-              hace que todos hablen de lo mismo: el pernil.
+              Nuestros perniles en Zona Norte están pensados para cumpleaños, reuniones familiares,
+              eventos y encuentros donde la comida no puede fallar. Producto abundante, sabor real
+              y una presencia que hace que todos hablen de lo mismo: el pernil.
             </p>
           </div>
 
           <div class="occasion__grid">
             <article class="occasion fade-up">
-              <img
-                src="../assets/img/1.jpg"
-                alt="Perniles para cumpleaños en Zona Norte"
-              />
+              <img src="../assets/img/1.jpg" alt="Perniles para cumpleaños en Zona Norte" loading="lazy" decoding="async" />
               <div class="occasion__body">
                 <h3>Perniles para cumpleaños</h3>
-                <p>
-                  La opción más elegida en Zona Norte para festejos donde la
-                  comida tiene que rendir, gustar y hacer que todos repitan.
-                </p>
+                <p>La opción más elegida en Zona Norte para festejos donde la comida tiene que rendir, gustar y hacer que todos repitan.</p>
               </div>
             </article>
 
             <article class="occasion fade-up">
-              <img
-                src="../assets/img/4.jpg"
-                alt="Perniles para reuniones familiares"
-              />
+              <img src="../assets/img/4.jpg" alt="Perniles para reuniones familiares" loading="lazy" decoding="async" />
               <div class="occasion__body">
                 <h3>Perniles para reuniones familiares</h3>
-                <p>
-                  Abundantes, fáciles de servir y perfectos para mesas grandes
-                  donde nadie quiere quedarse corto.
-                </p>
+                <p>Abundantes, fáciles de servir y perfectos para mesas grandes donde nadie quiere quedarse corto.</p>
               </div>
             </article>
 
             <article class="occasion fade-up">
-              <img
-                src="../assets/img/7.jpg"
-                alt="Perniles para eventos en Zona Norte"
-              />
+              <img src="../assets/img/7.jpg" alt="Perniles para eventos en Zona Norte" loading="lazy" decoding="async" />
               <div class="occasion__body">
                 <h3>Perniles para eventos</h3>
-                <p>
-                  Presencia, sabor y una solución completa. El pernil que eligen
-                  en Zona Norte cuando quieren resolver bien.
-                </p>
+                <p>Presencia, sabor y una solución completa. El pernil que eligen en Zona Norte cuando quieren resolver bien.</p>
               </div>
             </article>
 
             <article class="occasion fade-up">
-              <img
-                src="../assets/img/9.jpg"
-                alt="Perniles para reuniones con amigos"
-              />
+              <img src="../assets/img/9.jpg" alt="Perniles para reuniones con amigos" loading="lazy" decoding="async" />
               <div class="occasion__body">
                 <h3>Perniles para reuniones con amigos</h3>
-                <p>
-                  Si hay pernil, nadie se va temprano. Un clásico que transforma
-                  cualquier encuentro en algo memorable.
-                </p>
+                <p>Si hay pernil, nadie se va temprano. Un clásico que transforma cualquier encuentro en algo memorable.</p>
               </div>
             </article>
           </div>
@@ -431,46 +348,30 @@
             <div class="eyebrow">Perniles en Zona Norte · Pedido rápido</div>
             <h2>Cómo pedir el mejor pernil de Zona Norte</h2>
             <p>
-              Pedir nuestros perniles para eventos, cumpleaños y reuniones es
-              simple, rápido y directo. Sin vueltas, sin formularios eternos y
-              con una atención a la altura de un producto de primera calidad.
+              Pedir nuestros perniles para eventos, cumpleaños y reuniones es simple, rápido y directo.
+              Sin vueltas, sin formularios eternos y con una atención a la altura de un producto de primera calidad.
             </p>
           </div>
 
           <div class="process__grid">
             <article class="process-card fade-up" data-step="1">
               <h3>Elegís el pernil para tu evento</h3>
-              <p>
-                Nos contás para cuántas personas es, qué tipo de evento
-                organizás y qué fecha necesitás. Te ayudamos a elegir la mejor
-                opción para que no falte nada.
-              </p>
+              <p>Nos contás para cuántas personas es, qué tipo de evento organizás y qué fecha necesitás. Te ayudamos a elegir la mejor opción para que no falte nada.</p>
             </article>
 
             <article class="process-card fade-up" data-step="2">
               <h3>Coordinás por WhatsApp</h3>
-              <p>
-                Hablás directo con nosotros, resolvés todo en minutos y cerrás
-                tu pedido sin intermediarios. Así trabajan las marcas que saben
-                lo que hacen.
-              </p>
+              <p>Hablás directo con nosotros, resolvés todo en minutos y cerrás tu pedido sin intermediarios. Así trabajan las marcas que saben lo que hacen.</p>
             </article>
 
             <article class="process-card fade-up" data-step="3">
               <h3>Recibís un pernil listo para lucirse</h3>
-              <p>
-                Entregamos perniles en Zona Norte con presentación impecable,
-                listos para cortar, servir y convertirse en lo mejor de la mesa.
-              </p>
+              <p>Entregamos perniles en Zona Norte con presentación impecable, listos para cortar, servir y convertirse en lo mejor de la mesa.</p>
             </article>
 
             <article class="process-card fade-up" data-step="4">
               <h3>Servís y quedás arriba de todos</h3>
-              <p>
-                Lo abrís, lo cortás, armás los sandwiches y dejás que el
-                producto haga el resto. Por eso nuestros perniles son la
-                elección número uno para eventos en Zona Norte.
-              </p>
+              <p>Lo abrís, lo cortás, armás los sandwiches y dejás que el producto haga el resto. Por eso nuestros perniles son la elección número uno para eventos en Zona Norte.</p>
             </article>
           </div>
         </div>
@@ -479,38 +380,33 @@
       <section class="serving">
         <div class="container">
           <div class="section-head fade-up">
-            <div class="eyebrow">
-              Perniles en Zona Norte · Primera calidad · Eventos
-            </div>
-
-            <h2>Así se sirve un pernil de verdad</h2>
-
+            <div class="eyebrow">Perniles en Zona Norte · Primera calidad · Eventos</div>
+            <h2>El pernil que se sirve en los mejores eventos de Zona Norte</h2>
             <p>
-              Nuestros perniles se sirven calientes, jugosos y listos para
-              cortar y armar en el momento. Son la elección número uno en Zona
-              Norte para cumpleaños, reuniones y eventos donde la comida tiene
-              que rendir, gustar y quedar en la memoria de todos.
+              Nuestros perniles se sirven calientes, jugosos y listos para cortar y armar en el momento.
+              Son la elección número uno en Zona Norte para cumpleaños, reuniones y eventos donde la comida
+              tiene que rendir, gustar y quedar en la memoria de todos.
             </p>
           </div>
 
           <div class="serving__grid">
             <div class="serving__item fade-up">
-              <img src="../assets/img/2.jpg" />
+              <img src="../assets/img/2.jpg" alt="Pernil dorado con costra crocante real" loading="lazy" decoding="async" />
               <span>Pernil dorado con costra crocante real</span>
             </div>
 
             <div class="serving__item fade-up">
-              <img src="../assets/img/1.jpg" />
+              <img src="../assets/img/1.jpg" alt="Pieza caliente lista para cortar y servir" loading="lazy" decoding="async" />
               <span>Pieza caliente lista para cortar y servir</span>
             </div>
 
             <div class="serving__item fade-up">
-              <img src="../assets/img/7.jpg" />
+              <img src="../assets/img/7.jpg" alt="Perniles perfectos para eventos, cumpleaños y reuniones" loading="lazy" decoding="async" />
               <span>Perfecto para eventos, cumpleaños y reuniones</span>
             </div>
 
             <div class="serving__item fade-up">
-              <img src="../assets/img/8.jpg" />
+              <img src="../assets/img/8.jpg" alt="Salsas que elevan el sabor en cada sandwich" loading="lazy" decoding="async" />
               <span>Salsas que elevan el sabor en cada sandwich</span>
             </div>
           </div>
@@ -520,16 +416,11 @@
       <section class="cta">
         <div class="container">
           <div class="cta__box fade-up">
-            <div class="eyebrow">
-              Perniles en Zona Norte · Eventos · Cumpleaños
-            </div>
-
+            <div class="eyebrow">Perniles en Zona Norte · Eventos · Cumpleaños</div>
             <h2>El pernil que eligen en Zona Norte para sus eventos</h2>
-
             <p>
-              No es uno más. Es el pernil que rinde, gusta y hace que todos
-              pregunten de dónde salió. Pedilo por WhatsApp y asegurate la mejor
-              opción para tu evento.
+              No es uno más. Es el pernil que rinde, gusta y hace que todos pregunten de dónde salió.
+              Pedilo por WhatsApp y asegurate la mejor opción para tu evento.
             </p>
 
             <div class="cta-row">
@@ -541,7 +432,6 @@
               >
                 Pedir pernil por WhatsApp
               </a>
-
               <span class="mini-pill">Desde $X</span>
               <span class="mini-pill">+20 personas</span>
               <span class="mini-pill">Zona Norte</span>
@@ -554,25 +444,16 @@
 
     <footer class="footer">
       <div class="container footer__inner">
-        <!-- Marca -->
         <div class="footer__brand">
-          <img
-            src="../assets/img/logo-removebg-preview.png"
-            alt="Perniles Cochon"
-          />
-          <p>
-            Perniles Cochon · Perniles en Zona Norte para eventos, cumpleaños y
-            reuniones.
-          </p>
+          <img src="../assets/img/logo-removebg-preview.png" alt="Perniles Cochon" width="64" height="64" loading="lazy" decoding="async" />
+          <p>Perniles Cochon · Perniles en Zona Norte para eventos, cumpleaños y reuniones.</p>
         </div>
 
-        <!-- Links / info -->
         <div class="footer__info">
           <span>© 2026 Perniles Cochon</span>
           <span>Buenos Aires, Argentina</span>
         </div>
 
-        <!-- CTA -->
         <div class="footer__cta">
           <a
             href="https://wa.me/5491136441214?text=Hola%20Perniles%20Cochon%2C%20quiero%20pedir%20un%20pernil"
@@ -584,7 +465,6 @@
         </div>
       </div>
 
-      <!-- by Raven3 -->
       <div class="footer__bottom">
         <span>by <strong>Raven3</strong></span>
       </div>
@@ -600,9 +480,7 @@
       <span>WhatsApp</span>
       <span>Pedí ahora</span>
     </a>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/bundled/lenis.min.js"></script>
-    <script src="/new/main.js"></script>
+
+    <script src="/new/main.js" defer></script>
   </body>
 </html>
