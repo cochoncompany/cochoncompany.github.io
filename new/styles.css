@@ -631,6 +631,15 @@ section {
   background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.82));
 } */
 
+.occasion__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+  z-index: 1;
+  pointer-events: none;
+}
+
 .occasion__body {
   position: absolute;
   inset: auto 0 0 0;
