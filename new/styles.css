@@ -2342,3 +2342,247 @@ section[id] {
     flex-wrap: wrap;
   }
 }
+
+/* =========================================
+   DATE PICKER (Fecha del evento)
+   ========================================= */
+.date-field {
+  position: relative;
+}
+
+.date-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.date-input:hover {
+  border-color: rgba(255, 207, 132, 0.35);
+}
+
+.date-input:focus-visible {
+  outline: none;
+  border-color: rgba(255, 207, 132, 0.5);
+}
+
+.date-input svg {
+  flex-shrink: 0;
+  color: var(--accent-2);
+}
+
+#date-display-text.is-set {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.calendar-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 50;
+  width: min(300px, 88vw);
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 208, 140, 0.18);
+  background:
+    linear-gradient(180deg, rgba(30, 20, 15, 0.98), rgba(15, 10, 8, 0.98));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.calendar-popover__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+
+.calendar-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.calendar-nav:hover {
+  border-color: rgba(255, 207, 132, 0.35);
+  background: rgba(255, 207, 132, 0.1);
+}
+
+.calendar-nav:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.calendar-weekdays,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-weekdays {
+  margin-bottom: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+}
+
+.calendar-days {
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.calendar-day--empty {
+  cursor: default;
+}
+
+.calendar-day:not(.calendar-day--empty):not(.calendar-day--disabled):hover {
+  border-color: rgba(255, 207, 132, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.calendar-day--disabled {
+  color: rgba(255, 255, 255, 0.22);
+  cursor: not-allowed;
+}
+
+.calendar-day--today {
+  border-color: rgba(255, 207, 132, 0.45);
+}
+
+.calendar-day--selected {
+  background: linear-gradient(135deg, var(--accent), var(--hot));
+  color: #1a1109;
+  font-weight: 800;
+  border-color: transparent;
+}
+
+.calendar-hint {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .calendar-popover {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* =========================================
+   PRICED MEAT CHIPS + LIVE BUDGET
+   ========================================= */
+.choice-grid--priced {
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+}
+
+.choice-chip--priced span {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  min-height: 58px;
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.choice-chip--priced strong {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.chip-price {
+  font-style: normal;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent-2);
+}
+
+.choice-chip--locked {
+  cursor: not-allowed;
+}
+
+.choice-chip--locked span {
+  opacity: 0.4;
+}
+
+.choice-chip--locked .chip-price {
+  color: var(--muted);
+}
+
+.budget-box {
+  margin-bottom: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 208, 140, 0.24);
+  background: linear-gradient(135deg, rgba(255, 207, 132, 0.14), rgba(255, 255, 255, 0.03));
+  text-align: center;
+}
+
+.budget-box__label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.budget-box__amount {
+  display: block;
+  margin-bottom: 6px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.9rem;
+  color: var(--accent-2);
+}
+
+.budget-box__note {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
