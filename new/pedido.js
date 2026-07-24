@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const addressWrap = document.getElementById("address-wrap");
   const addressInput = document.getElementById("address-input");
   const addressStatusEl = document.getElementById("address-status");
+  const addressFloorInput = document.getElementById("address-floor-input");
 
   const nameInput = document.getElementById("name-input");
   const dateInput = document.getElementById("date-input");
@@ -396,10 +397,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function addressHasNumber(value) {
+    return /\d/.test(value);
+  }
+
   function scheduleAddressCheck() {
     clearTimeout(geocodeTimer);
     const query = addressInput.value.trim();
     lastGeocode = null;
+
+    if (!query) {
+      hideAddressStatus();
+      return;
+    }
+
+    if (!addressHasNumber(query)) {
+      showAddressStatus(
+        "missingnumber",
+        "⚠ Falta el número de la calle — agregalo para poder enviar (ej: Ingeniero Marconi 1643)."
+      );
+      return;
+    }
 
     if (query.length < 6) {
       hideAddressStatus();
@@ -592,6 +610,12 @@ document.addEventListener("DOMContentLoaded", () => {
       ? `${breads.join(", ")}${panes != null ? ` (${panes} panes en total)` : ""}`
       : null;
 
+    const addressValueForSummary = addressInput.value.trim();
+    const addressFloorValue = addressFloorInput.value.trim();
+    const addressLabel = addressValueForSummary
+      ? `${addressValueForSummary}${addressFloorValue ? `, ${addressFloorValue}` : ""}`
+      : null;
+
     const items = [
       ["Personas", people ? people.label : null],
       ["Carne", meats.length ? meats.join(", ") : null],
@@ -599,6 +623,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ["Salsas", sauces.length ? `${sauces.length} — ${sauces.join(", ")}` : null],
       ["Vegetariano", veggie ? `${veggie.nombre} — ${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"} (${veggie.qty} personas)` : null],
       ["Modalidad", modalidad ? modalidad.value : null],
+      ["Dirección", modalidad && modalidad.value === "Envío a domicilio" ? addressLabel : null],
       ["Fecha", dateInput.value ? formatDate(dateInput.value) : null],
     ].filter(([, value]) => value);
 
@@ -609,15 +634,21 @@ document.addEventListener("DOMContentLoaded", () => {
       : '<li class="summary-empty">Todavía no elegiste nada. Empezá por la cantidad de personas.</li>';
 
     const needsAddress = Boolean(modalidad) && modalidad.value === "Envío a domicilio";
-    const hasAddress = addressInput.value.trim().length > 0;
+    const addressValue = addressInput.value.trim();
+    const hasAddress = addressValue.length > 0 && addressHasNumber(addressValue);
     const basicsReady = Boolean(people) && meats.length > 0 && Boolean(modalidad);
     const ready = basicsReady && (!needsAddress || hasAddress);
 
     submitBtn.disabled = !ready;
     validationMsg.hidden = ready;
-    validationMsg.textContent = basicsReady && needsAddress && !hasAddress
-      ? "Falta la dirección de envío para poder enviar."
-      : "Elegí cantidad de personas, una carne y retiro/envío para poder enviar.";
+
+    if (basicsReady && needsAddress && !hasAddress) {
+      validationMsg.textContent = addressValue
+        ? "Falta el número de la calle en la dirección para poder enviar."
+        : "Falta la dirección de envío para poder enviar.";
+    } else {
+      validationMsg.textContent = "Elegí cantidad de personas, una carne y retiro/envío para poder enviar.";
+    }
   }
 
   function formatDate(iso) {
@@ -646,6 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSummary();
     scheduleAddressCheck();
   });
+  addressFloorInput.addEventListener("input", updateSummary);
 
   if (veggieToggleInput) {
     veggieToggleInput.addEventListener("change", () => {
@@ -673,7 +705,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const meats = selectedValues(meatChecks);
     const modalidad = form.querySelector('input[name="modalidad"]:checked');
     const needsAddress = Boolean(modalidad) && modalidad.value === "Envío a domicilio";
-    const hasAddress = addressInput.value.trim().length > 0;
+    const addressValue = addressInput.value.trim();
+    const hasAddress = addressValue.length > 0 && addressHasNumber(addressValue);
 
     if (!people || !meats.length || !modalidad || (needsAddress && !hasAddress)) {
       updateSummary();
@@ -687,6 +720,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = nameInput.value.trim();
     const date = formatDate(dateInput.value);
     const address = addressInput.value.trim();
+    const addressFloor = addressFloorInput.value.trim();
     const comments = commentsInput.value.trim();
     const budget = calculateBudget();
     const veggie = getVeggieSelection();
@@ -711,8 +745,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (budget.amountText && budget.amountText !== "—") lines.push(`${EMOJI.money} Presupuesto estimado: ${budget.amountText}`);
     if (modalidad) lines.push(`${EMOJI.package} Modalidad: ${modalidad.value}`);
     if (address) {
+      const floorNote = addressFloor ? `, ${addressFloor}` : "";
       const mapsLink = lastGeocode ? ` (mapa: https://www.google.com/maps?q=${lastGeocode.lat},${lastGeocode.lon})` : "";
-      lines.push(`${EMOJI.pin} Dirección: ${address}${mapsLink}`);
+      lines.push(`${EMOJI.pin} Dirección: ${address}${floorNote}${mapsLink}`);
     }
     if (date) lines.push(`${EMOJI.calendar} Fecha del evento: ${date}`);
     if (comments) lines.push(`${EMOJI.memo} Comentarios: ${comments}`);
