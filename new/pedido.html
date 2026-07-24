@@ -365,9 +365,12 @@
                 </div>
 
                 <div class="form-field" id="address-wrap" hidden>
-                  <label for="address-input">Dirección de envío</label>
-                  <input type="text" id="address-input" name="direccion" placeholder="Calle, altura, localidad" autocomplete="street-address" />
+                  <label for="address-input">Dirección de envío (calle y número)</label>
+                  <input type="text" id="address-input" name="direccion" placeholder="Ej: Ingeniero Marconi 1643" autocomplete="street-address" />
                   <p class="address-status" id="address-status" hidden></p>
+
+                  <label for="address-floor-input" class="form-field__sublabel">Piso / depto (si corresponde)</label>
+                  <input type="text" id="address-floor-input" name="piso-depto" placeholder="Ej: Piso 4, depto B" autocomplete="address-line2" />
                 </div>
 
                 <div class="form-field">
