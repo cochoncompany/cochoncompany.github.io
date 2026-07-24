@@ -227,6 +227,29 @@
                     </span>
                   </label>
                 </div>
+
+                <div class="veggie-addon">
+                  <label class="veggie-toggle">
+                    <input type="checkbox" id="veggie-toggle-input" />
+                    <span>
+                      <strong>🍄 Sumar opción vegetariana — Pulled shrooms</strong>
+                      <em>Para los invitados que no comen carne · cada porción rinde 5 a 6 personas, con panes y coleslaw en vez de salsas</em>
+                    </span>
+                  </label>
+
+                  <div class="veggie-qty" id="veggie-qty-wrap" hidden>
+                    <label for="veggie-qty-input">¿Para cuántas personas aproximadamente?</label>
+                    <input
+                      type="number"
+                      id="veggie-qty-input"
+                      min="1"
+                      step="1"
+                      placeholder="Ej: 6"
+                      inputmode="numeric"
+                    />
+                    <p class="chip-price" id="veggie-price-text">Cada porción ($40.000) cubre 5 a 6 personas</p>
+                  </div>
+                </div>
               </fieldset>
 
               <fieldset class="field-block">

@@ -2586,3 +2586,92 @@ section[id] {
   line-height: 1.45;
   color: var(--muted);
 }
+
+/* =========================================
+   VEGETARIAN ADD-ON
+   ========================================= */
+.veggie-addon {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--line);
+}
+
+.veggie-toggle {
+  position: relative;
+  display: flex;
+  cursor: pointer;
+}
+
+.veggie-toggle input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.veggie-toggle span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.veggie-toggle span em {
+  font-style: normal;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.veggie-toggle:hover span {
+  border-color: rgba(255, 207, 132, 0.3);
+}
+
+.veggie-toggle input:checked + span {
+  border-color: rgba(255, 207, 132, 0.5);
+  background: linear-gradient(180deg, rgba(255, 207, 132, 0.14), rgba(255, 255, 255, 0.03));
+}
+
+.veggie-toggle input:focus-visible + span {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
+.veggie-qty {
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px dashed var(--line);
+}
+
+.veggie-qty label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.veggie-qty input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.24);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.veggie-qty input:focus {
+  outline: none;
+  border-color: rgba(255, 207, 132, 0.5);
+}
+
+.veggie-qty .chip-price {
+  display: block;
+  margin-top: 8px;
+}
