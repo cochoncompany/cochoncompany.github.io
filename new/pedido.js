@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     pin: "\u{1F4CD}",
     calendar: "\u{1F4C5}",
     memo: "\u{1F4DD}",
+    check: "\u{2705}",
+    remove: "\u{274C}",
   };
 
   const peopleRadios = form.querySelectorAll('input[name="people"]');
@@ -49,6 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const breadHintEl = document.getElementById("bread-hint");
   const budgetAmountEl = document.getElementById("budget-amount");
   const budgetNoteEl = document.getElementById("budget-note");
+  const mobileBudgetAmountEl = document.getElementById("mobile-budget-amount");
+  const toastContainer = document.getElementById("toast-container");
 
   const veggieToggleInput = document.getElementById("veggie-toggle-input");
   const veggieQtyWrap = document.getElementById("veggie-qty-wrap");
@@ -504,6 +508,7 @@ document.addEventListener("DOMContentLoaded", () => {
             closeCalendar();
             dateDisplay.focus();
             updateSummary();
+            showToast(`${EMOJI.calendar} Fecha: ${formatDisplay(date)}`);
           });
         }
 
@@ -583,6 +588,53 @@ document.addEventListener("DOMContentLoaded", () => {
     })[c]);
   }
 
+  // ---- Toast feedback: confirms what just changed in the order ----
+  const MAX_TOASTS = 3;
+  const TOAST_LIFETIME_MS = 2400;
+
+  function showToast(message) {
+    if (!toastContainer) return;
+
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
+    toastContainer.appendChild(toast);
+
+    while (toastContainer.children.length > MAX_TOASTS) {
+      toastContainer.firstElementChild.remove();
+    }
+
+    requestAnimationFrame(() => toast.classList.add("toast--visible"));
+
+    setTimeout(() => {
+      toast.classList.remove("toast--visible");
+      toast.classList.add("toast--leaving");
+      toast.addEventListener("transitionend", () => toast.remove(), { once: true });
+    }, TOAST_LIFETIME_MS);
+  }
+
+  // Brief scale "pop" on the chip that was just toggled, for tactile feedback.
+  function popChip(input) {
+    const chip = input.closest(".choice-chip");
+    if (!chip) return;
+    chip.classList.remove("is-popping");
+    // Force reflow so the animation can restart if toggled again quickly.
+    void chip.offsetWidth;
+    chip.classList.add("is-popping");
+  }
+
+  function pulseBudget() {
+    [budgetAmountEl, mobileBudgetAmountEl].forEach((el) => {
+      if (!el) return;
+      el.classList.remove("is-pulsing");
+      void el.offsetWidth;
+      el.classList.add("is-pulsing");
+    });
+  }
+
+  let hasRenderedOnce = false;
+  let lastBudgetText = null;
+
   function updateSummary() {
     updateMeatAvailability();
     updateMeatPriceTags();
@@ -603,6 +655,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const budget = calculateBudget();
     budgetAmountEl.textContent = budget.amountText;
     budgetNoteEl.textContent = budget.note;
+    if (mobileBudgetAmountEl) mobileBudgetAmountEl.textContent = budget.amountText;
+
+    if (hasRenderedOnce && budget.amountText !== lastBudgetText) {
+      pulseBudget();
+    }
+    lastBudgetText = budget.amountText;
 
     const veggie = getVeggieSelection();
 
@@ -649,6 +707,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       validationMsg.textContent = "Elegí cantidad de personas, una carne y retiro/envío para poder enviar.";
     }
+
+    hasRenderedOnce = true;
   }
 
   function formatDate(iso) {
@@ -661,16 +721,40 @@ document.addEventListener("DOMContentLoaded", () => {
     r.addEventListener("change", () => {
       updateOtherVisibility();
       updateSummary();
+      if (r.value !== "other") showToast(`${EMOJI.people} ${r.value} personas seleccionadas`);
     })
   );
   otherInput.addEventListener("input", updateSummary);
-  meatChecks.forEach((c) => c.addEventListener("change", updateSummary));
-  breadChecks.forEach((c) => c.addEventListener("change", updateSummary));
-  sauceChecks.forEach((c) => c.addEventListener("change", updateSummary));
+  otherInput.addEventListener("change", () => {
+    const v = parseInt(otherInput.value, 10);
+    if (Number.isFinite(v) && v > 0) showToast(`${EMOJI.people} ${v} personas seleccionadas`);
+  });
+  meatChecks.forEach((c) =>
+    c.addEventListener("change", () => {
+      updateSummary();
+      popChip(c);
+      showToast(c.checked ? `${EMOJI.meat} ${c.value} agregada` : `${EMOJI.remove} ${c.value} quitada`);
+    })
+  );
+  breadChecks.forEach((c) =>
+    c.addEventListener("change", () => {
+      updateSummary();
+      popChip(c);
+      showToast(c.checked ? `${EMOJI.bread} ${c.value} agregado` : `${EMOJI.remove} ${c.value} quitado`);
+    })
+  );
+  sauceChecks.forEach((c) =>
+    c.addEventListener("change", () => {
+      updateSummary();
+      popChip(c);
+      showToast(c.checked ? `${EMOJI.spoon} ${c.value} agregada` : `${EMOJI.remove} ${c.value} quitada`);
+    })
+  );
   modalidadRadios.forEach((r) =>
     r.addEventListener("change", () => {
       updateAddressVisibility();
       updateSummary();
+      showToast(`${EMOJI.package} ${r.value}`);
     })
   );
   addressInput.addEventListener("input", () => {
@@ -685,6 +769,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (veggieToggleInput.checked) veggieQtyInput.focus();
       updateVeggiePriceText();
       updateSummary();
+      showToast(
+        veggieToggleInput.checked
+          ? `${EMOJI.mushroom} Opción vegetariana agregada`
+          : `${EMOJI.remove} Opción vegetariana quitada`
+      );
     });
     veggieQtyInput.addEventListener("input", () => {
       updateVeggiePriceText();
