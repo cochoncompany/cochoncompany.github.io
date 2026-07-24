@@ -28,6 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const budgetAmountEl = document.getElementById("budget-amount");
   const budgetNoteEl = document.getElementById("budget-note");
 
+  const veggieToggleInput = document.getElementById("veggie-toggle-input");
+  const veggieQtyWrap = document.getElementById("veggie-qty-wrap");
+  const veggieQtyInput = document.getElementById("veggie-qty-input");
+  const veggiePriceText = document.getElementById("veggie-price-text");
+
   const PRECIOS = window.PRECIOS_COCHON || {
     porPersonas: {},
     solomillo: {},
@@ -108,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateMeatPriceTags() {
     const sel = getPeopleSelection();
 
-    document.querySelectorAll(".chip-price").forEach((el) => {
+    document.querySelectorAll(".chip-price[data-price-for]").forEach((el) => {
       const key = el.dataset.priceFor;
 
       if (!sel || !sel.people) {
@@ -129,38 +134,105 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Pulled shrooms se vende por porción (rinde 5-6 personas c/u), no por
+  // persona suelta. Redondeamos siempre para arriba: para 7 personas
+  // hacen falta 2 porciones (cubren hasta 12).
+  function portionsFor(qty) {
+    const v = PRECIOS.vegetariano;
+    if (!v || !v.personasMaxPorPorcion) return null;
+    return Math.ceil(qty / v.personasMaxPorPorcion);
+  }
+
+  // Returns { qty, portions, price, nombre, acompañamiento } once a valid
+  // quantity is entered, null otherwise (toggle off, or qty not typed yet).
+  function getVeggieSelection() {
+    if (!veggieToggleInput || !veggieToggleInput.checked) return null;
+    const qty = parseInt(veggieQtyInput.value, 10);
+    if (!Number.isFinite(qty) || qty <= 0) return null;
+
+    const v = PRECIOS.vegetariano;
+    const nombre = v ? v.nombre : "Opción vegetariana";
+    const portions = portionsFor(qty);
+    const price = v && v.precioPorPorcion != null && portions != null ? portions * v.precioPorPorcion : null;
+    return { qty, portions, price, nombre, acompañamiento: v ? v.acompañamiento : null };
+  }
+
+  function updateVeggiePriceText() {
+    if (!veggiePriceText) return;
+    const v = PRECIOS.vegetariano;
+    const qty = parseInt(veggieQtyInput.value, 10);
+    const hasQty = Number.isFinite(qty) && qty > 0;
+
+    if (!v || v.precioPorPorcion == null) {
+      veggiePriceText.textContent = "Consultanos el precio";
+      return;
+    }
+    if (!hasQty) {
+      veggiePriceText.textContent = `Cada porción (${formatCurrency(v.precioPorPorcion)}) cubre ${v.personasMinPorPorcion} a ${v.personasMaxPorPorcion} personas`;
+      return;
+    }
+    const portions = portionsFor(qty);
+    const total = portions * v.precioPorPorcion;
+    veggiePriceText.textContent = `${portions} ${portions > 1 ? "porciones" : "porción"} de Pulled shrooms — ${formatCurrency(total)}`;
+  }
+
   function calculateBudget() {
     const sel = getPeopleSelection();
     const checkedMeats = [...meatChecks].filter((c) => c.checked);
     const sauces = selectedValues(sauceChecks);
+    const veggie = getVeggieSelection();
+
+    function withVeggie(result) {
+      if (!veggie) return result;
+      const portionsLabel = veggie.portions ? `${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"}` : "";
+      const acompañamiento = veggie.acompañamiento ? `, con ${veggie.acompañamiento.toLowerCase()}` : "";
+
+      if (veggie.price != null && result.total != null) {
+        return {
+          amountText: formatCurrency(result.total + veggie.price),
+          note: `${result.note} Incluye ${veggie.nombre} — ${portionsLabel} para ${veggie.qty} personas (${formatCurrency(veggie.price)})${acompañamiento}.`,
+        };
+      }
+      const amountText =
+        result.amountText === "—" || result.amountText === "A confirmar"
+          ? result.amountText
+          : `${result.amountText} + vegetariano`;
+      return {
+        amountText,
+        note: `${result.note} Sumaste ${veggie.nombre} para ${veggie.qty} personas — te confirmamos ese costo por WhatsApp.`,
+      };
+    }
 
     if (!sel || !sel.people) {
-      return { amountText: "—", note: "Elegí personas y una carne para ver el precio." };
+      return withVeggie({ amountText: "—", note: "Elegí personas y una carne para ver el precio.", total: null });
     }
     if (checkedMeats.length === 0) {
-      return { amountText: "—", note: "Elegí una carne para ver el precio." };
+      return withVeggie({ amountText: "—", note: "Elegí una carne para ver el precio.", total: null });
     }
     if (checkedMeats.length > 1) {
-      return {
+      return withVeggie({
         amountText: "A confirmar",
         note: "Combinás más de una carne: te confirmamos el precio exacto por WhatsApp.",
-      };
+        total: null,
+      });
     }
 
     const meatKey = checkedMeats[0].dataset.meatKey;
     const meatPrice = priceForMeat(meatKey, sel.people);
 
     if (meatPrice === undefined) {
-      return {
+      return withVeggie({
         amountText: "A confirmar",
         note: "Esa carne no está disponible para esa cantidad de personas. Te confirmamos opciones por WhatsApp.",
-      };
+        total: null,
+      });
     }
     if (meatPrice === null) {
-      return {
+      return withVeggie({
         amountText: "A confirmar",
         note: "Todavía no tenemos ese precio cargado. Te lo confirmamos por WhatsApp.",
-      };
+        total: null,
+      });
     }
 
     const bracket = PRECIOS.porPersonas[sel.people];
@@ -168,24 +240,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const extra = Math.max(0, sauces.length - recomendadas);
 
     if (extra === 0) {
-      return {
+      return withVeggie({
         amountText: formatCurrency(meatPrice),
         note: `Incluye ${recomendadas} salsas a elección, panes y todo listo para servir.`,
-      };
+        total: meatPrice,
+      });
     }
 
     if (PRECIOS.precioSalsaExtra == null) {
-      return {
+      return withVeggie({
         amountText: `${formatCurrency(meatPrice)} + salsas extra`,
         note: `Elegiste ${extra} salsa${extra > 1 ? "s" : ""} más de las ${recomendadas} incluidas — te confirmamos el costo extra por WhatsApp.`,
-      };
+        total: null,
+      });
     }
 
     const total = meatPrice + extra * PRECIOS.precioSalsaExtra;
-    return {
+    return withVeggie({
       amountText: formatCurrency(total),
       note: `Incluye ${recomendadas} salsas + ${extra} extra a ${formatCurrency(PRECIOS.precioSalsaExtra)} c/u.`,
-    };
+      total,
+    });
   }
 
   function selectedValues(nodeList) {
@@ -376,11 +451,14 @@ document.addEventListener("DOMContentLoaded", () => {
     budgetAmountEl.textContent = budget.amountText;
     budgetNoteEl.textContent = budget.note;
 
+    const veggie = getVeggieSelection();
+
     const items = [
       ["Personas", people ? people.label : null],
       ["Carne", meats.length ? meats.join(", ") : null],
       ["Pan", breads.length ? breads.join(", ") : null],
       ["Salsas", sauces.length ? `${sauces.length} — ${sauces.join(", ")}` : null],
+      ["Vegetariano", veggie ? `${veggie.nombre} — ${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"} (${veggie.qty} personas)` : null],
       ["Modalidad", modalidad ? modalidad.value : null],
       ["Fecha", dateInput.value ? formatDate(dateInput.value) : null],
     ].filter(([, value]) => value);
@@ -419,6 +497,20 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   );
 
+  if (veggieToggleInput) {
+    veggieToggleInput.addEventListener("change", () => {
+      veggieQtyWrap.hidden = !veggieToggleInput.checked;
+      if (veggieToggleInput.checked) veggieQtyInput.focus();
+      updateVeggiePriceText();
+      updateSummary();
+    });
+    veggieQtyInput.addEventListener("input", () => {
+      updateVeggiePriceText();
+      updateSummary();
+    });
+    updateVeggiePriceText();
+  }
+
   updateOtherVisibility();
   updateAddressVisibility();
   setupCalendar();
@@ -444,6 +536,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const address = addressInput.value.trim();
     const comments = commentsInput.value.trim();
     const budget = calculateBudget();
+    const veggie = getVeggieSelection();
 
     const lines = ["Hola Cochon & Co! 👋 Quiero armar un pedido:", ""];
     if (name) lines.push(`🙋 Nombre: ${name}`);
@@ -451,6 +544,12 @@ document.addEventListener("DOMContentLoaded", () => {
     lines.push(`🍖 Carne: ${meats.join(", ")}`);
     if (breads.length) lines.push(`🍞 Pan: ${breads.join(", ")}`);
     if (sauces.length) lines.push(`🥄 Salsas (${sauces.length}): ${sauces.join(", ")}`);
+    if (veggie) {
+      const acompañamiento = veggie.acompañamiento ? ` (${veggie.acompañamiento})` : "";
+      lines.push(
+        `🍄 Vegetariano: ${veggie.nombre} — ${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"} para ${veggie.qty} personas${acompañamiento}`
+      );
+    }
     if (budget.amountText && budget.amountText !== "—") lines.push(`💰 Presupuesto estimado: ${budget.amountText}`);
     if (modalidad) lines.push(`📦 Modalidad: ${modalidad.value}`);
     if (address) lines.push(`📍 Dirección: ${address}`);

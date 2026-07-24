@@ -50,4 +50,16 @@ window.PRECIOS_COCHON = {
   // TODO: cargar el valor real. Mientras sea null, el formulario
   // avisa "consultanos" en vez de cobrar un número inventado.
   precioSalsaExtra: null,
+
+  // Opción vegetariana (add-on, no reemplaza la carne del evento).
+  // Se vende por porción: cada porción rinde para un rango de personas,
+  // trae sus propios panes y coleslaw en vez de salsas.
+  vegetariano: {
+    nombre: "Pulled shrooms",
+    precioPorPorcion: 40000,
+    personasMinPorPorcion: 5,
+    personasMaxPorPorcion: 6,
+    panesPorPorcion: "20 a 25",
+    acompañamiento: "Coleslaw (en lugar de salsas)",
+  },
 };
