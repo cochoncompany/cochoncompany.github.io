@@ -28,7 +28,7 @@ window.PRECIOS_COCHON = {
     35:  { bondiola: null,   cerdo: 264000, ternera: 382400, panes: 140, salsasIncluidas: 5 },
     40:  { bondiola: null,   cerdo: 326000, ternera: 405900, panes: 160, salsasIncluidas: 6 },
     50:  { bondiola: null,   cerdo: 386000, ternera: 480000, panes: 200, salsasIncluidas: 6 },
-    60:  { bondiola: null,   cerdo: null,   ternera: 590000, panes: 240, salsasIncluidas: 7 },
+    60:  { bondiola: null,   cerdo: 430000,   ternera: 590000, panes: 240, salsasIncluidas: 7 },
     70:  { bondiola: null,   cerdo: 510000, ternera: 663000, panes: 280, salsasIncluidas: 7 },
     80:  { bondiola: null,   cerdo: 569000, ternera: 732000, panes: 320, salsasIncluidas: 8 },
     90:  { bondiola: null,   cerdo: 623000, ternera: 821000, panes: 360, salsasIncluidas: 8 },
