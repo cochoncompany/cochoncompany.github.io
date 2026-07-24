@@ -47,9 +47,7 @@ window.PRECIOS_COCHON = {
   cantidadesGrupoChico: [5, 10],
 
   // Costo por CADA salsa que se elige por encima de las incluidas.
-  // TODO: cargar el valor real. Mientras sea null, el formulario
-  // avisa "consultanos" en vez de cobrar un número inventado.
-  precioSalsaExtra: null,
+  precioSalsaExtra: 5000,
 
   // Opción vegetariana (add-on, no reemplaza la carne del evento).
   // Se vende por porción: cada porción rinde para un rango de personas,
