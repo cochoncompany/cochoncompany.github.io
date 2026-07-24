@@ -4,6 +4,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const WHATSAPP_NUMBER = "5491136441214";
 
+  // Emoji as \u{} escapes, not literal characters: some hosting/serving
+  // setups mis-detect the charset of external .js files and mangle
+  // 4-byte (astral) characters like emoji into "�". Escapes are plain
+  // ASCII in the source, so no charset guessing can ever break them.
+  const EMOJI = {
+    wave: "\u{1F44B}",
+    raise: "\u{1F64B}",
+    people: "\u{1F465}",
+    meat: "\u{1F356}",
+    bread: "\u{1F35E}",
+    spoon: "\u{1F944}",
+    mushroom: "\u{1F344}",
+    money: "\u{1F4B0}",
+    package: "\u{1F4E6}",
+    pin: "\u{1F4CD}",
+    calendar: "\u{1F4C5}",
+    memo: "\u{1F4DD}",
+  };
+
   const peopleRadios = form.querySelectorAll('input[name="people"]');
   const otherWrap = document.getElementById("people-other-wrap");
   const otherInput = document.getElementById("people-other-input");
@@ -25,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submit-btn");
   const validationMsg = document.getElementById("validation-msg");
   const meatHintEl = document.getElementById("meat-hint");
+  const breadHintEl = document.getElementById("bread-hint");
   const budgetAmountEl = document.getElementById("budget-amount");
   const budgetNoteEl = document.getElementById("budget-note");
 
@@ -132,6 +152,37 @@ document.addEventListener("DOMContentLoaded", () => {
       else if (price === null) el.textContent = "Consultanos el precio";
       else el.textContent = formatCurrency(price);
     });
+  }
+
+  // La cantidad de panes viene fija por la tabla según personas (no se
+  // elige) — lo que el cliente elige acá es solo el/los tipo(s).
+  function panesFor(people) {
+    const bracket = PRECIOS.porPersonas[people];
+    return bracket ? bracket.panes : null;
+  }
+
+  function updateBreadHint() {
+    if (!breadHintEl) return;
+    const sel = getPeopleSelection();
+    const breads = selectedValues(breadChecks);
+
+    if (!sel || !sel.people) {
+      breadHintEl.textContent = "Podés elegir uno o combinar varios. Elegí primero la cantidad de personas para ver cuántos panes incluye.";
+      return;
+    }
+
+    const panes = panesFor(sel.people);
+    if (panes == null) {
+      breadHintEl.textContent = "Podés elegir uno o combinar varios. Te confirmamos la cantidad exacta de panes por WhatsApp.";
+      return;
+    }
+
+    if (breads.length <= 1) {
+      breadHintEl.textContent = `Para ${sel.label} incluye ${panes} panes en total. Podés combinar más de un tipo.`;
+      return;
+    }
+
+    breadHintEl.textContent = `Para ${sel.label} incluye ${panes} panes en total — los repartimos en partes iguales entre los ${breads.length} tipos elegidos, salvo que nos aclares otra proporción en comentarios.`;
   }
 
   // Pulled shrooms se vende por porción (rinde 5-6 personas c/u), no por
@@ -435,12 +486,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateSummary() {
     updateMeatAvailability();
     updateMeatPriceTags();
+    updateBreadHint();
 
     const people = getPeopleSelection();
     const meats = selectedValues(meatChecks);
     const breads = selectedValues(breadChecks);
     const sauces = selectedValues(sauceChecks);
     const modalidad = form.querySelector('input[name="modalidad"]:checked');
+    const panes = people ? panesFor(people.people) : null;
 
     sauceCountEl.textContent = String(sauces.length);
     sauceRecommendEl.textContent = people
@@ -453,10 +506,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const veggie = getVeggieSelection();
 
+    const breadLabel = breads.length
+      ? `${breads.join(", ")}${panes != null ? ` (${panes} panes en total)` : ""}`
+      : null;
+
     const items = [
       ["Personas", people ? people.label : null],
       ["Carne", meats.length ? meats.join(", ") : null],
-      ["Pan", breads.length ? breads.join(", ") : null],
+      ["Pan", breadLabel],
       ["Salsas", sauces.length ? `${sauces.length} — ${sauces.join(", ")}` : null],
       ["Vegetariano", veggie ? `${veggie.nombre} — ${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"} (${veggie.qty} personas)` : null],
       ["Modalidad", modalidad ? modalidad.value : null],
@@ -469,9 +526,16 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("")
       : '<li class="summary-empty">Todavía no elegiste nada. Empezá por la cantidad de personas.</li>';
 
-    const ready = Boolean(people) && meats.length > 0;
+    const needsAddress = Boolean(modalidad) && modalidad.value === "Envío a domicilio";
+    const hasAddress = addressInput.value.trim().length > 0;
+    const basicsReady = Boolean(people) && meats.length > 0 && Boolean(modalidad);
+    const ready = basicsReady && (!needsAddress || hasAddress);
+
     submitBtn.disabled = !ready;
     validationMsg.hidden = ready;
+    validationMsg.textContent = basicsReady && needsAddress && !hasAddress
+      ? "Falta la dirección de envío para poder enviar."
+      : "Elegí cantidad de personas, una carne y retiro/envío para poder enviar.";
   }
 
   function formatDate(iso) {
@@ -496,6 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSummary();
     })
   );
+  addressInput.addEventListener("input", updateSummary);
 
   if (veggieToggleInput) {
     veggieToggleInput.addEventListener("change", () => {
@@ -521,7 +586,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const people = getPeopleSelection();
     const meats = selectedValues(meatChecks);
-    if (!people || !meats.length) {
+    const modalidad = form.querySelector('input[name="modalidad"]:checked');
+    const needsAddress = Boolean(modalidad) && modalidad.value === "Envío a domicilio";
+    const hasAddress = addressInput.value.trim().length > 0;
+
+    if (!people || !meats.length || !modalidad || (needsAddress && !hasAddress)) {
       updateSummary();
       validationMsg.hidden = false;
       validationMsg.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -530,31 +599,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const breads = selectedValues(breadChecks);
     const sauces = selectedValues(sauceChecks);
-    const modalidad = form.querySelector('input[name="modalidad"]:checked');
     const name = nameInput.value.trim();
     const date = formatDate(dateInput.value);
     const address = addressInput.value.trim();
     const comments = commentsInput.value.trim();
     const budget = calculateBudget();
     const veggie = getVeggieSelection();
+    const panes = panesFor(people.people);
 
-    const lines = ["Hola Cochon & Co! 👋 Quiero armar un pedido:", ""];
-    if (name) lines.push(`🙋 Nombre: ${name}`);
-    lines.push(`👥 Personas: ${people.label}`);
-    lines.push(`🍖 Carne: ${meats.join(", ")}`);
-    if (breads.length) lines.push(`🍞 Pan: ${breads.join(", ")}`);
-    if (sauces.length) lines.push(`🥄 Salsas (${sauces.length}): ${sauces.join(", ")}`);
+    const lines = [`Hola Cochon & Co! ${EMOJI.wave} Quiero armar un pedido:`, ""];
+    if (name) lines.push(`${EMOJI.raise} Nombre: ${name}`);
+    lines.push(`${EMOJI.people} Personas: ${people.label}`);
+    lines.push(`${EMOJI.meat} Carne: ${meats.join(", ")}`);
+    if (breads.length) {
+      const panesNote = panes != null ? ` — ${panes} panes en total` : "";
+      const repartoNote = breads.length > 1 ? " (partes iguales salvo que aclare otra proporción)" : "";
+      lines.push(`${EMOJI.bread} Pan: ${breads.join(", ")}${panesNote}${repartoNote}`);
+    }
+    if (sauces.length) lines.push(`${EMOJI.spoon} Salsas (${sauces.length}): ${sauces.join(", ")}`);
     if (veggie) {
       const acompañamiento = veggie.acompañamiento ? ` (${veggie.acompañamiento})` : "";
       lines.push(
-        `🍄 Vegetariano: ${veggie.nombre} — ${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"} para ${veggie.qty} personas${acompañamiento}`
+        `${EMOJI.mushroom} Vegetariano: ${veggie.nombre} — ${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"} para ${veggie.qty} personas${acompañamiento}`
       );
     }
-    if (budget.amountText && budget.amountText !== "—") lines.push(`💰 Presupuesto estimado: ${budget.amountText}`);
-    if (modalidad) lines.push(`📦 Modalidad: ${modalidad.value}`);
-    if (address) lines.push(`📍 Dirección: ${address}`);
-    if (date) lines.push(`📅 Fecha del evento: ${date}`);
-    if (comments) lines.push(`📝 Comentarios: ${comments}`);
+    if (budget.amountText && budget.amountText !== "—") lines.push(`${EMOJI.money} Presupuesto estimado: ${budget.amountText}`);
+    if (modalidad) lines.push(`${EMOJI.package} Modalidad: ${modalidad.value}`);
+    if (address) lines.push(`${EMOJI.pin} Dirección: ${address}`);
+    if (date) lines.push(`${EMOJI.calendar} Fecha del evento: ${date}`);
+    if (comments) lines.push(`${EMOJI.memo} Comentarios: ${comments}`);
     lines.push("", "¿Me ayudan a confirmar disponibilidad?");
 
     const text = encodeURIComponent(lines.join("\n"));
