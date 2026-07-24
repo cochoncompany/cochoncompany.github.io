@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Armá tu pedido | Cochon &amp; Co.</title>
+    <meta
+      name="description"
+      content="Elegí cantidad de personas, carne, pan y salsas. Armamos el resumen y lo enviamos por WhatsApp para confirmar tu pedido de perniles."
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#0f0b09" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="canonical" href="https://pernilescochon.com.ar/new/pedido.html" />
+
+    <link rel="icon" href="../assets/img/favicon_io/favicon.ico" sizes="any" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="../assets/img/favicon_io/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="../assets/img/favicon_io/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="../assets/img/favicon_io/apple-touch-icon.png"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#pedido">Saltar al contenido</a>
+
+    <header class="topbar">
+      <div class="container topbar__inner">
+        <a class="brand" href="index.html#inicio" aria-label="Cochon &amp; Co.">
+          <img
+            src="../assets/img/logo-removebg-preview.png"
+            alt="Logo de Cochon &amp; Co."
+            class="brand__logo"
+            width="74"
+            height="74"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <div class="brand__text">
+            <span class="brand__name">Cochon &amp; Co.</span>
+            <span class="brand__sub">Vos ponés el evento, nosotros la comida</span>
+          </div>
+        </a>
+
+        <div class="topbar__actions">
+          <a
+            class="rating-badge"
+            href="https://www.google.com/maps?cid=4770668792370405659"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="5.0 de 5 estrellas, 17 reseñas en Google"
+          >
+            <span class="rating-badge__stars" aria-hidden="true">★★★★★</span>
+            <span class="rating-badge__text">5.0 <em>· 17 en Google</em></span>
+          </a>
+          <a
+            class="social-icon"
+            href="https://www.instagram.com/cochoncompany"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Cochon & Co. en Instagram"
+          >
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none" />
+            </svg>
+          </a>
+          <div class="price-pill">Cerdo · Ternera · Bondiola · Solomillo</div>
+          <a class="btn btn--ghost" href="index.html#inicio">← Volver al inicio</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="pedido">
+      <section class="pedido-hero">
+        <div class="container">
+          <div class="eyebrow">Armá tu pedido</div>
+          <h1>Contanos qué necesitás</h1>
+          <p>
+            Elegís cantidad de personas, carne, pan y salsas. Armamos el resumen y te lo mandamos por WhatsApp para confirmar disponibilidad — ahí terminamos de ajustar cualquier detalle.
+          </p>
+        </div>
+      </section>
+
+      <section class="pedido-form-section">
+        <div class="container">
+          <form id="pedido-form" class="pedido__grid" novalidate>
+            <div class="pedido__main">
+              <fieldset class="field-block">
+                <div class="field-block__head">
+                  <span class="field-block__n">1</span>
+                  <div>
+                    <legend>¿Cuántas personas son?</legend>
+                    <p class="field-block__hint">Elegí la cantidad más cercana a tu evento.</p>
+                  </div>
+                </div>
+
+                <div class="choice-grid choice-grid--people">
+                  <label class="choice-chip">
+                    <input type="radio" name="people" value="5 a 10 personas" data-sauces="2" />
+                    <span>5 a 10 personas</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="people" value="15 personas" data-sauces="3" />
+                    <span>15 personas</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="people" value="20 a 30 personas" data-sauces="4" />
+                    <span>20 a 30 personas</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="people" value="35 a 50 personas" data-sauces="5" />
+                    <span>35 a 50 personas</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="people" value="60 a 70 personas" data-sauces="6" />
+                    <span>60 a 70 personas</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="people" value="80 a 90 personas" data-sauces="7" />
+                    <span>80 a 90 personas</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="people" value="100 personas" data-sauces="8" />
+                    <span>100 personas</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="people" value="other" />
+                    <span>Otra cantidad</span>
+                  </label>
+                </div>
+
+                <div class="other-amount" id="people-other-wrap" hidden>
+                  <label for="people-other-input">¿Cuántas personas, aproximadamente?</label>
+                  <input
+                    type="number"
+                    id="people-other-input"
+                    name="people-other"
+                    min="5"
+                    step="1"
+                    placeholder="Ej: 15"
+                    inputmode="numeric"
+                  />
+                </div>
+              </fieldset>
+
+              <fieldset class="field-block">
+                <div class="field-block__head">
+                  <span class="field-block__n">2</span>
+                  <div>
+                    <legend>¿Qué carne querés?</legend>
+                    <p class="field-block__hint">Podés combinar más de una opción.</p>
+                  </div>
+                </div>
+
+                <div class="choice-grid">
+                  <label class="choice-chip">
+                    <input type="checkbox" name="carne" value="Pernil de cerdo" />
+                    <span>Pernil de cerdo</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="carne" value="Pernil de ternera" />
+                    <span>Pernil de ternera</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="carne" value="Bondiola de cerdo" />
+                    <span>Bondiola de cerdo</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="carne" value="Solomillo" />
+                    <span>Solomillo</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="field-block">
+                <div class="field-block__head">
+                  <span class="field-block__n">3</span>
+                  <div>
+                    <legend>¿Qué pan preferís?</legend>
+                    <p class="field-block__hint">Podés elegir uno o combinar varios.</p>
+                  </div>
+                </div>
+
+                <div class="choice-grid">
+                  <label class="choice-chip">
+                    <input type="checkbox" name="pan" value="Pan de campo" />
+                    <span>Pan de campo</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="pan" value="Pan de miga" />
+                    <span>Pan de miga</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="checkbox" name="pan" value="Pan árabe" />
+                    <span>Pan árabe</span>
+                  </label>
+                </div>
+              </fieldset>
+
+              <fieldset class="field-block">
+                <div class="field-block__head">
+                  <span class="field-block__n">4</span>
+                  <div>
+                    <legend>Elegí tus salsas</legend>
+                    <p class="field-block__hint" id="sauce-recommend">
+                      Elegí primero la cantidad de personas para ver una recomendación.
+                    </p>
+                  </div>
+                  <span class="sauce-counter"><strong id="sauce-count">0</strong> elegidas</span>
+                </div>
+
+                <div class="choice-grid choice-grid--sauces">
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Alioli" /><span>Alioli</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Barbacoa" /><span>Barbacoa</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Cebolla caramelizada" /><span>Cebolla caramelizada</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Cebolla caramelizada con vino" /><span>Cebolla caramelizada con vino</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Chimichurri" /><span>Chimichurri</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Criolla" /><span>Criolla</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Hummus clásico" /><span>Hummus clásico</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Mostaza y miel" /><span>Mostaza y miel</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Mayonesa y albahaca" /><span>Mayonesa y albahaca</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Mayonesa provenzal" /><span>Mayonesa provenzal</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Mayonesa picante" /><span>Mayonesa picante</span></label>
+                  <label class="choice-chip"><input type="checkbox" name="salsas" value="Queso crema y ciboulette" /><span>Queso crema y ciboulette</span></label>
+                </div>
+              </fieldset>
+
+              <fieldset class="field-block">
+                <div class="field-block__head">
+                  <span class="field-block__n">5</span>
+                  <div>
+                    <legend>Datos del evento</legend>
+                    <p class="field-block__hint">Opcional, pero nos ayuda a responderte más rápido.</p>
+                  </div>
+                </div>
+
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label for="name-input">Tu nombre</label>
+                    <input type="text" id="name-input" name="nombre" placeholder="¿Cómo te llamás?" autocomplete="name" />
+                  </div>
+
+                  <div class="form-field">
+                    <label for="date-input">Fecha del evento</label>
+                    <input type="date" id="date-input" name="fecha" />
+                  </div>
+                </div>
+
+                <div class="choice-grid choice-grid--modalidad">
+                  <label class="choice-chip">
+                    <input type="radio" name="modalidad" value="Retiro en Boulogne" />
+                    <span>Retiro en Boulogne</span>
+                  </label>
+                  <label class="choice-chip">
+                    <input type="radio" name="modalidad" value="Envío a domicilio" />
+                    <span>Envío a domicilio</span>
+                  </label>
+                </div>
+
+                <div class="form-field" id="address-wrap" hidden>
+                  <label for="address-input">Dirección de envío</label>
+                  <input type="text" id="address-input" name="direccion" placeholder="Calle, altura, localidad" autocomplete="street-address" />
+                </div>
+
+                <div class="form-field">
+                  <label for="comments-input">Comentarios adicionales</label>
+                  <textarea
+                    id="comments-input"
+                    name="comentarios"
+                    rows="3"
+                    placeholder="Proporciones entre carnes, alergias, horario preferido, lo que necesites contarnos"
+                  ></textarea>
+                </div>
+              </fieldset>
+            </div>
+
+            <aside class="pedido__aside">
+              <div class="summary-card">
+                <h2>Resumen de tu pedido</h2>
+                <ul class="summary-list" id="summary-list">
+                  <li class="summary-empty">Todavía no elegiste nada. Empezá por la cantidad de personas.</li>
+                </ul>
+
+                <button type="submit" class="btn btn--primary summary-card__submit" id="submit-btn" disabled>
+                  Enviar pedido por WhatsApp
+                </button>
+                <p class="validation-msg" id="validation-msg">
+                  Elegí al menos la cantidad de personas y una carne para poder enviar.
+                </p>
+
+                <a
+                  class="escape-hatch"
+                  href="https://wa.me/5491136441214?text=Hola%20Cochon%20%26%20Co.%2C%20tengo%20una%20consulta"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  ¿Preferís escribirnos directo? →
+                </a>
+              </div>
+            </aside>
+          </form>
+        </div>
+      </section>
+    </main>
+
+  <footer class="footer">
+  <div class="container footer__inner">
+
+    <!-- BRAND -->
+    <div class="footer__brand">
+      <img
+        src="../assets/img/logo-removebg-preview.png"
+        alt="Cochon &amp; Co."
+        class="footer__logo"
+        loading="lazy"
+        decoding="async"
+      />
+      <p class="footer__tagline">
+        Perniles para eventos que realmente se disfrutan.
+      </p>
+      <p class="footer__sub">
+        Cumpleaños, reuniones y eventos en Zona Norte y CABA.
+      </p>
+      <a
+        class="social-icon social-icon--footer"
+        href="https://www.instagram.com/cochoncompany"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Cochon & Co. en Instagram"
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none" />
+        </svg>
+        <span>@cochoncompany</span>
+      </a>
+    </div>
+
+    <!-- INFO -->
+    <div class="footer__info">
+      <div class="footer__item">
+        <span class="footer__label">Zona de cobertura</span>
+        <span>Boulogne · San Isidro · Zona Norte · CABA</span>
+      </div>
+
+      <div class="footer__item">
+        <span class="footer__label">Disponibilidad</span>
+        <span>Fines de semana y eventos programados</span>
+      </div>
+
+      <div class="footer__item">
+        <span class="footer__label">Respuesta</span>
+        <span>Respondemos rápido por WhatsApp</span>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="footer__cta">
+      <a
+        class="footer__review-link"
+        href="https://www.google.com/maps?cid=4770668792370405659"
+        target="_blank"
+        rel="noreferrer"
+      >
+        ★★★★★ Dejanos tu reseña en Google
+      </a>
+      <span class="footer__cta-note">
+        Reservá con anticipación · Cupos limitados
+      </span>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="footer__bottom">
+    <span>© 2026 Cochon &amp; Co.</span>
+    <span class="footer__sep">·</span>
+    <span>by <strong>Raven3</strong></span>
+  </div>
+</footer>
+
+    <script src="pedido.js" defer></script>
+  </body>
+</html>
