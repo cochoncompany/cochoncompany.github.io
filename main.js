@@ -11,6 +11,38 @@
 
       document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
 
+      const reviewsTrack = document.getElementById("reviewsTrack");
+      const reviewsMarquee = document.querySelector(".reviews__marquee");
+      if (reviewsTrack) {
+        reviewsTrack.querySelectorAll(".review-card p").forEach((p) => {
+          if (p.scrollHeight - p.clientHeight > 2) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "review-card__more";
+            btn.textContent = "Leer más";
+            p.insertAdjacentElement("afterend", btn);
+          }
+        });
+
+        reviewsTrack.addEventListener("click", (event) => {
+          const btn = event.target.closest(".review-card__more");
+          if (!btn) return;
+          const card = btn.closest(".review-card");
+          const expanded = card.classList.toggle("is-expanded");
+          btn.textContent = expanded ? "Leer menos" : "Leer más";
+          reviewsMarquee?.classList.toggle(
+            "is-paused",
+            !!reviewsTrack.querySelector(".review-card.is-expanded")
+          );
+        });
+
+        [...reviewsTrack.children].forEach((card) => {
+          const clone = card.cloneNode(true);
+          clone.setAttribute("aria-hidden", "true");
+          reviewsTrack.appendChild(clone);
+        });
+      }
+
       const steps = [...document.querySelectorAll(".step")];
       const storyImages = [...document.querySelectorAll(".story__image")];
 
