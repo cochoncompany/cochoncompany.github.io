@@ -2675,3 +2675,34 @@ section[id] {
   display: block;
   margin-top: 8px;
 }
+
+/* =========================================
+   ADDRESS VALIDATION STATUS
+   ========================================= */
+.address-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.address-status a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.address-status--loading {
+  color: var(--muted);
+}
+
+.address-status--found {
+  color: #8fd6a8;
+}
+
+.address-status--notfound {
+  color: var(--accent-2);
+}

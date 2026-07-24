@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalidadRadios = form.querySelectorAll('input[name="modalidad"]');
   const addressWrap = document.getElementById("address-wrap");
   const addressInput = document.getElementById("address-input");
+  const addressStatusEl = document.getElementById("address-status");
 
   const nameInput = document.getElementById("name-input");
   const dateInput = document.getElementById("date-input");
@@ -328,6 +329,87 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateAddressVisibility() {
     const checked = form.querySelector('input[name="modalidad"]:checked');
     addressWrap.hidden = !checked || checked.value !== "Envío a domicilio";
+    if (addressWrap.hidden) hideAddressStatus();
+  }
+
+  // ---- Verificación de dirección (OpenStreetMap Nominatim, sin API key) ----
+  // No bloquea el envío: es una ayuda visual para que el cliente confirme
+  // que escribió bien la dirección, y para que ustedes tengan un link al
+  // mapa listo en el mensaje.
+  let geocodeTimer = null;
+  let geocodeRequestId = 0;
+  let lastGeocode = null; // { lat, lon, displayName } de la dirección actualmente confirmada
+
+  function showAddressStatus(kind, html) {
+    if (!addressStatusEl) return;
+    addressStatusEl.hidden = false;
+    addressStatusEl.className = `address-status address-status--${kind}`;
+    addressStatusEl.innerHTML = html;
+  }
+
+  function hideAddressStatus() {
+    if (!addressStatusEl) return;
+    addressStatusEl.hidden = true;
+    addressStatusEl.innerHTML = "";
+  }
+
+  async function geocodeAddress(query, requestId) {
+    try {
+      const params = new URLSearchParams({
+        format: "jsonv2",
+        q: `${query}, Buenos Aires, Argentina`,
+        countrycodes: "ar",
+        limit: "1",
+        // Preferencia (no filtro estricto) hacia Zona Norte / CABA, la zona
+        // de cobertura real, para no confundir calles homónimas de otros partidos.
+        viewbox: "-58.75,-34.40,-58.35,-34.65",
+        bounded: "0",
+      });
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`, {
+        headers: { Accept: "application/json" },
+      });
+      if (requestId !== geocodeRequestId) return; // ya hay una búsqueda más nueva en curso
+      if (!res.ok) throw new Error("geocode request failed");
+
+      const results = await res.json();
+      if (requestId !== geocodeRequestId) return;
+
+      if (results.length) {
+        const r = results[0];
+        lastGeocode = { lat: r.lat, lon: r.lon, displayName: r.display_name };
+        const mapUrl = `https://www.google.com/maps?q=${r.lat},${r.lon}`;
+        showAddressStatus(
+          "found",
+          `✓ Encontramos: ${escapeHtml(r.display_name)} · <a href="${mapUrl}" target="_blank" rel="noreferrer">Ver en mapa</a>`
+        );
+      } else {
+        lastGeocode = null;
+        showAddressStatus(
+          "notfound",
+          "⚠ No pudimos encontrar esta dirección en el mapa. Revisá calle, altura y localidad — igual podés enviarla, la confirmamos por WhatsApp."
+        );
+      }
+    } catch (err) {
+      if (requestId !== geocodeRequestId) return;
+      lastGeocode = null;
+      hideAddressStatus();
+    }
+  }
+
+  function scheduleAddressCheck() {
+    clearTimeout(geocodeTimer);
+    const query = addressInput.value.trim();
+    lastGeocode = null;
+
+    if (query.length < 6) {
+      hideAddressStatus();
+      return;
+    }
+
+    geocodeRequestId += 1;
+    const requestId = geocodeRequestId;
+    showAddressStatus("loading", "Buscando la dirección…");
+    geocodeTimer = setTimeout(() => geocodeAddress(query, requestId), 900);
   }
 
   // ---- Calendar (Fecha del evento) ----
@@ -560,7 +642,10 @@ document.addEventListener("DOMContentLoaded", () => {
       updateSummary();
     })
   );
-  addressInput.addEventListener("input", updateSummary);
+  addressInput.addEventListener("input", () => {
+    updateSummary();
+    scheduleAddressCheck();
+  });
 
   if (veggieToggleInput) {
     veggieToggleInput.addEventListener("change", () => {
@@ -625,7 +710,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     if (budget.amountText && budget.amountText !== "—") lines.push(`${EMOJI.money} Presupuesto estimado: ${budget.amountText}`);
     if (modalidad) lines.push(`${EMOJI.package} Modalidad: ${modalidad.value}`);
-    if (address) lines.push(`${EMOJI.pin} Dirección: ${address}`);
+    if (address) {
+      const mapsLink = lastGeocode ? ` (mapa: https://www.google.com/maps?q=${lastGeocode.lat},${lastGeocode.lon})` : "";
+      lines.push(`${EMOJI.pin} Dirección: ${address}${mapsLink}`);
+    }
     if (date) lines.push(`${EMOJI.calendar} Fecha del evento: ${date}`);
     if (comments) lines.push(`${EMOJI.memo} Comentarios: ${comments}`);
     lines.push("", "¿Me ayudan a confirmar disponibilidad?");
