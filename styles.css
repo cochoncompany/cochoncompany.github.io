@@ -1564,6 +1564,7 @@ section[id] {
 .social-icon--footer {
   width: auto;
   height: auto;
+  margin-top: 16px;
   padding: 8px 14px 8px 10px;
   border-radius: 999px;
   gap: 8px;
