@@ -1414,8 +1414,9 @@ section[id] {
 
   .footer__inner {
     gap: 22px;
-    text-align: left;
+    text-align: center;
     padding-bottom: 24px;
+    justify-items: center;
   }
 
   .footer__brand {
@@ -1424,8 +1425,9 @@ section[id] {
 
   .footer__logo,
   .footer__brand img {
+    display: block;
     width: 42px;
-    margin-bottom: 10px;
+    margin: 0 auto 10px;
   }
 
   .footer__brand p {
