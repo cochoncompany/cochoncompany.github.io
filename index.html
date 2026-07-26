@@ -69,7 +69,8 @@
     <link
       rel="preload"
       as="image"
-      href="../assets/img/7.jpg"
+      href="../assets/img/7.webp"
+      type="image/webp"
       fetchpriority="high"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -169,15 +170,18 @@
     <header class="topbar">
       <div class="container topbar__inner">
         <a class="brand" href="#inicio" aria-label="Cochon &amp; Co.">
-          <img
-            src="../assets/img/logo-removebg-preview.png"
-            alt="Logo de Cochon &amp; Co."
-            class="brand__logo"
-            width="74"
-            height="74"
-            fetchpriority="high"
-            decoding="async"
-          />
+          <picture style="display: contents">
+            <source srcset="../assets/img/logo-removebg-preview.webp" type="image/webp" />
+            <img
+              src="../assets/img/logo-removebg-preview.png"
+              alt="Logo de Cochon &amp; Co."
+              class="brand__logo"
+              width="74"
+              height="74"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
           <div class="brand__text">
             <span class="brand__name">Cochon &amp; Co.</span>
             <span class="brand__sub">Vos ponés el evento, nosotros la comida</span>
@@ -225,8 +229,9 @@
             loop
             playsinline
             preload="metadata"
-            poster="../assets/img/7.jpg"
+            poster="../assets/img/7.webp"
           >
+            <source src="../assets/video/video.webm" type="video/webm" />
             <source src="../assets/video/video.mp4" type="video/mp4" />
           </video>
         </div>
@@ -532,45 +537,57 @@
           <div class="story__wrap">
             <div class="story__sticky fade-up">
               <div class="story__stage">
-                <img
-                  class="story__image is-active"
-                  src="../assets/img/4.jpg"
-                  alt="Pernil preparado para cocción"
-                  data-story-image="0"
-                  width="1080"
-                  height="1440"
-                  decoding="async"
-                />
-                <img
-                  class="story__image"
-                  src="../assets/img/9.jpg"
-                  alt="Pernil en cocción lenta"
-                  data-story-image="1"
-                  width="1080"
-                  height="720"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <img
-                  class="story__image"
-                  src="../assets/img/panes.JPG"
-                  alt="Panes frescos para acompañar pernil"
-                  data-story-image="2"
-                  width="1280"
-                  height="1920"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <img
-                  class="story__image"
-                  src="../assets/img/armado.JPG"
-                  alt="Pedido de pernil listo para servir"
-                  data-story-image="3"
-                  width="1280"
-                  height="1920"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture style="display: contents">
+                  <source srcset="../assets/img/4.webp" type="image/webp" />
+                  <img
+                    class="story__image is-active"
+                    src="../assets/img/4.jpg"
+                    alt="Pernil preparado para cocción"
+                    data-story-image="0"
+                    width="1080"
+                    height="1440"
+                    decoding="async"
+                  />
+                </picture>
+                <picture style="display: contents">
+                  <source srcset="../assets/img/9.webp" type="image/webp" />
+                  <img
+                    class="story__image"
+                    src="../assets/img/9.jpg"
+                    alt="Pernil en cocción lenta"
+                    data-story-image="1"
+                    width="1080"
+                    height="720"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+                <picture style="display: contents">
+                  <source srcset="../assets/img/panes.webp" type="image/webp" />
+                  <img
+                    class="story__image"
+                    src="../assets/img/panes.JPG"
+                    alt="Panes frescos para acompañar pernil"
+                    data-story-image="2"
+                    width="1280"
+                    height="1920"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+                <picture style="display: contents">
+                  <source srcset="../assets/img/armado.webp" type="image/webp" />
+                  <img
+                    class="story__image"
+                    src="../assets/img/armado.JPG"
+                    alt="Pedido de pernil listo para servir"
+                    data-story-image="3"
+                    width="1280"
+                    height="1920"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
                 <div class="story__glow"></div>
               </div>
             </div>
@@ -646,14 +663,17 @@
 
           <div class="menu__gallery">
             <article class="gallery__item fade-up">
-              <img
-                src="../assets/img/8.jpg"
-                alt="Pernil dorado con costra crocante"
-                width="1024"
-                height="1365"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture style="display: contents">
+                <source srcset="../assets/img/8.webp" type="image/webp" />
+                <img
+                  src="../assets/img/8.jpg"
+                  alt="Pernil dorado con costra crocante"
+                  width="1024"
+                  height="1365"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
               <div class="gallery__overlay">
                 <strong>Pernil dorado y jugoso</strong>
                 <span>Listo para cortar y servir en tu evento.</span>
@@ -661,14 +681,17 @@
             </article>
 
             <article class="gallery__item fade-up">
-              <img
-                src="../assets/img/desmenuzado.JPG"
-                alt="Pernil desmenuzado jugoso"
-                width="1280"
-                height="1920"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture style="display: contents">
+                <source srcset="../assets/img/desmenuzado.webp" type="image/webp" />
+                <img
+                  src="../assets/img/desmenuzado.JPG"
+                  alt="Pernil desmenuzado jugoso"
+                  width="1280"
+                  height="1920"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
               <div class="gallery__overlay">
                 <strong>Carne abundante</strong>
                 <span>Calculada según la cantidad de personas.</span>
@@ -676,14 +699,17 @@
             </article>
 
             <article class="gallery__item fade-up">
-              <img
-                src="../assets/img/armado.JPG"
-                alt="Armado de sandwiches de pernil"
-                width="1280"
-                height="1920"
-                loading="lazy"
-                decoding="async"
-              />
+              <picture style="display: contents">
+                <source srcset="../assets/img/armado.webp" type="image/webp" />
+                <img
+                  src="../assets/img/armado.JPG"
+                  alt="Armado de sandwiches de pernil"
+                  width="1280"
+                  height="1920"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
               <div class="gallery__overlay">
                 <strong>Sándwiches en el momento</strong>
                 <span>La forma más práctica de servir sin complicarte.</span>
@@ -751,14 +777,17 @@
           <div class="occasion__grid">
             <article class="occasion fade-up">
               <div class="occasion__media">
-                <img
-                  src="../assets/img/cumple.jpg"
-                  alt="Perniles para cumpleaños"
-                  width="900"
-                  height="720"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture style="display: contents">
+                  <source srcset="../assets/img/cumple.webp" type="image/webp" />
+                  <img
+                    src="../assets/img/cumple.jpg"
+                    alt="Perniles para cumpleaños"
+                    width="900"
+                    height="720"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <div class="occasion__body">
                 <h3>Cumpleaños</h3>
@@ -768,14 +797,17 @@
 
             <article class="occasion fade-up">
               <div class="occasion__media">
-                <img
-                  src="../assets/img/familia.jpg"
-                  alt="Perniles para reuniones familiares"
-                  width="900"
-                  height="720"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture style="display: contents">
+                  <source srcset="../assets/img/familia.webp" type="image/webp" />
+                  <img
+                    src="../assets/img/familia.jpg"
+                    alt="Perniles para reuniones familiares"
+                    width="900"
+                    height="720"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <div class="occasion__body">
                 <h3>Reuniones familiares</h3>
@@ -785,14 +817,17 @@
 
             <article class="occasion fade-up">
               <div class="occasion__media">
-                <img
-                  src="../assets/img/evento.jpg"
-                  alt="Perniles para eventos"
-                  width="900"
-                  height="720"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture style="display: contents">
+                  <source srcset="../assets/img/evento.webp" type="image/webp" />
+                  <img
+                    src="../assets/img/evento.jpg"
+                    alt="Perniles para eventos"
+                    width="900"
+                    height="720"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <div class="occasion__body">
                 <h3>Eventos</h3>
@@ -802,14 +837,17 @@
 
             <article class="occasion fade-up">
               <div class="occasion__media">
-                <img
-                  src="../assets/img/amigos2.jpg"
-                  alt="Perniles para reuniones con amigos"
-                  width="900"
-                  height="720"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture style="display: contents">
+                  <source srcset="../assets/img/amigos2.webp" type="image/webp" />
+                  <img
+                    src="../assets/img/amigos2.jpg"
+                    alt="Perniles para reuniones con amigos"
+                    width="900"
+                    height="720"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <div class="occasion__body">
                 <h3>Con amigos</h3>
@@ -854,15 +892,24 @@
 
           <div class="delivery__strip fade-up">
             <div class="delivery__point">
-              <img src="../assets/img/1.jpg" alt="Pernil en bandeja para corte" width="1080" height="1440" loading="lazy" decoding="async" />
+              <picture style="display: contents">
+                <source srcset="../assets/img/1.webp" type="image/webp" />
+                <img src="../assets/img/1.jpg" alt="Pernil en bandeja para corte" width="1080" height="1440" loading="lazy" decoding="async" />
+              </picture>
               <span>Bandeja que funciona como tabla de corte</span>
             </div>
             <div class="delivery__point">
-              <img src="../assets/img/2.jpg" alt="Pernil caliente listo para servir" width="1080" height="1440" loading="lazy" decoding="async" />
+              <picture style="display: contents">
+                <source srcset="../assets/img/2.webp" type="image/webp" />
+                <img src="../assets/img/2.jpg" alt="Pernil caliente listo para servir" width="1080" height="1440" loading="lazy" decoding="async" />
+              </picture>
               <span>Se mantiene caliente por ~2 horas</span>
             </div>
             <div class="delivery__point">
-              <img src="../assets/img/salsas.JPG" alt="Salsas caseras y untadores" width="1280" height="1920" loading="lazy" decoding="async" />
+              <picture style="display: contents">
+                <source srcset="../assets/img/salsas.webp" type="image/webp" />
+                <img src="../assets/img/salsas.JPG" alt="Salsas caseras y untadores" width="1280" height="1920" loading="lazy" decoding="async" />
+              </picture>
               <span>Incluye panes, salsas y untadores</span>
             </div>
           </div>
@@ -924,8 +971,9 @@
             loop
             playsinline
             preload="metadata"
-            poster="../assets/img/sandwich - Copy.jpg"
+            poster="../assets/img/sandwich - Copy.webp"
           >
+            <source src="../assets/video/video2.webm" type="video/webm" />
             <source src="../assets/video/video2.mp4" type="video/mp4" />
           </video>
         </div>
@@ -976,15 +1024,18 @@
 
     <!-- BRAND -->
     <div class="footer__brand">
-      <img
-        src="../assets/img/logo-removebg-preview.png"
-        alt="Cochon &amp; Co."
-        class="footer__logo"
-        width="48"
-        height="48"
-        loading="lazy"
-        decoding="async"
-      />
+      <picture style="display: contents">
+        <source srcset="../assets/img/logo-removebg-preview.webp" type="image/webp" />
+        <img
+          src="../assets/img/logo-removebg-preview.png"
+          alt="Cochon &amp; Co."
+          class="footer__logo"
+          width="48"
+          height="48"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
       <p class="footer__tagline">
         Perniles para eventos que realmente se disfrutan.
       </p>
