@@ -508,17 +508,17 @@ section[id] {
 }
 
 .benefits::before {
-  background: url("../assets/img/9.jpg") center/cover no-repeat;
+  background: url("../assets/img/galeria/pernil-coccion-lenta.webp") center/cover no-repeat;
   z-index: -2;
 }
 
 .process-simple::before {
-  background: url("../assets/img/8.jpg") center/cover no-repeat;
+  background: url("../assets/img/galeria/pernil-dorado-costra-crocante.webp") center/cover no-repeat;
   z-index: -2;
 }
 
 .cta::before {
-  background: url("../assets/img/sandwich - Copy.jpg") center/cover no-repeat;
+  background: url("../assets/img/cta/sandwich-pernil-cta.webp") center/cover no-repeat;
   z-index: -2;
 }
 
@@ -857,7 +857,7 @@ section[id] {
   }
   .hero__media video { display: none; }
   .hero__media {
-    background: url("../assets/img/7.jpg") center/cover no-repeat;
+    background: url("../assets/img/hero/pernil-horneado-eventos-zona-norte.webp") center/cover no-repeat;
   }
   .cta__media video { display: none; }
 }
