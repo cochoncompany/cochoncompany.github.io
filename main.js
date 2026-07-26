@@ -14,14 +14,16 @@
       const reviewsTrack = document.getElementById("reviewsTrack");
       const reviewsMarquee = document.querySelector(".reviews__marquee");
       if (reviewsTrack) {
-        reviewsTrack.querySelectorAll(".review-card p").forEach((p) => {
-          if (p.scrollHeight - p.clientHeight > 2) {
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "review-card__more";
-            btn.textContent = "Leer más";
-            p.insertAdjacentElement("afterend", btn);
-          }
+        const overflowingParagraphs = [...reviewsTrack.querySelectorAll(".review-card p")].filter(
+          (p) => p.scrollHeight - p.clientHeight > 2
+        );
+
+        overflowingParagraphs.forEach((p) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "review-card__more";
+          btn.textContent = "Leer más";
+          p.insertAdjacentElement("afterend", btn);
         });
 
         reviewsTrack.addEventListener("click", (event) => {

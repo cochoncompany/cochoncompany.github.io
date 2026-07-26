@@ -89,15 +89,18 @@
     <header class="topbar">
       <div class="container topbar__inner">
         <a class="brand" href="index.html" aria-label="Cochon &amp; Co.">
-          <img
-            src="../assets/img/logo-removebg-preview.png"
-            alt="Logo de Cochon &amp; Co."
-            class="brand__logo"
-            width="74"
-            height="74"
-            fetchpriority="high"
-            decoding="async"
-          />
+          <picture style="display: contents">
+            <source srcset="../assets/img/logo-removebg-preview.webp" type="image/webp" />
+            <img
+              src="../assets/img/logo-removebg-preview.png"
+              alt="Logo de Cochon &amp; Co."
+              class="brand__logo"
+              width="74"
+              height="74"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
           <div class="brand__text">
             <span class="brand__name">Cochon &amp; Co.</span>
             <span class="brand__sub">Vos ponés el evento, nosotros la comida</span>
@@ -485,15 +488,18 @@
 
     <!-- BRAND -->
     <div class="footer__brand">
-      <img
-        src="../assets/img/logo-removebg-preview.png"
-        alt="Cochon &amp; Co."
-        class="footer__logo"
-        width="48"
-        height="48"
-        loading="lazy"
-        decoding="async"
-      />
+      <picture style="display: contents">
+        <source srcset="../assets/img/logo-removebg-preview.webp" type="image/webp" />
+        <img
+          src="../assets/img/logo-removebg-preview.png"
+          alt="Cochon &amp; Co."
+          class="footer__logo"
+          width="48"
+          height="48"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
       <p class="footer__tagline">
         Perniles para eventos que realmente se disfrutan.
       </p>
