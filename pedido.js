@@ -56,8 +56,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const veggieToggleInput = document.getElementById("veggie-toggle-input");
   const veggieQtyWrap = document.getElementById("veggie-qty-wrap");
+  const veggiePhotos = document.getElementById("veggie-photos");
   const veggieQtyInput = document.getElementById("veggie-qty-input");
   const veggiePriceText = document.getElementById("veggie-price-text");
+
+  // Pasos del formulario, en orden. Se desbloquean por dependencia: la carne
+  // necesita la cantidad de personas (precios y disponibilidad dependen de
+  // eso), y pan/salsas/datos necesitan la carne. Pan y salsas son opcionales,
+  // así que se abren juntos en vez de uno atrás del otro.
+  const [stepPeople, stepMeat, ...stepsAfterMeat] = form.querySelectorAll(".pedido__main > .field-block");
+  const STEP_LOCKS = [
+    { fieldset: stepMeat, message: "Elegí primero la cantidad de personas." },
+    ...stepsAfterMeat.map((fieldset) => ({ fieldset, message: "Elegí primero una carne." })),
+  ];
+  STEP_LOCKS.forEach(({ fieldset, message }) => {
+    const note = document.createElement("p");
+    note.className = "field-block__lock";
+    note.textContent = message;
+    fieldset.querySelector(".field-block__head").after(note);
+  });
+  form.querySelectorAll(".field-block__n").forEach((n) => {
+    n.dataset.n = n.textContent;
+  });
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   const PRECIOS = window.PRECIOS_COCHON || {
     porPersonas: {},
@@ -644,8 +665,46 @@ document.addEventListener("DOMContentLoaded", () => {
   let hasRenderedOnce = false;
   let lastBudgetText = null;
 
+  function setStepLocked(fieldset, locked) {
+    fieldset.disabled = locked;
+    fieldset.classList.toggle("field-block--locked", locked);
+  }
+
+  function setStepDone(fieldset, done) {
+    const n = fieldset.querySelector(".field-block__n");
+    fieldset.classList.toggle("field-block--done", done);
+    n.textContent = done ? "✓" : n.dataset.n;
+  }
+
+  function updateSteps() {
+    const people = getPeopleSelection();
+    const meats = selectedValues(meatChecks);
+    const modalidad = form.querySelector('input[name="modalidad"]:checked');
+    const needsAddress = Boolean(modalidad) && modalidad.value === "Envío a domicilio";
+    const addressValue = addressInput.value.trim();
+    const hasAddress = addressValue.length > 0 && addressHasNumber(addressValue);
+
+    setStepLocked(stepMeat, !people);
+    stepsAfterMeat.forEach((fs) => setStepLocked(fs, !people || !meats.length));
+
+    const [stepBread, stepSauces, stepEvent] = stepsAfterMeat;
+    setStepDone(stepPeople, Boolean(people));
+    setStepDone(stepMeat, Boolean(people) && meats.length > 0);
+    setStepDone(stepBread, !stepBread.disabled && selectedValues(breadChecks).length > 0);
+    setStepDone(stepSauces, !stepSauces.disabled && selectedValues(sauceChecks).length > 0);
+    setStepDone(stepEvent, !stepEvent.disabled && Boolean(modalidad) && (!needsAddress || hasAddress));
+  }
+
+  // Después de elegir personas llevamos al paso de carne, pero solo la primera
+  // vez (si ya hay carne elegida, está cambiando la cantidad y no hay que moverlo).
+  function scrollToMeatIfPending() {
+    if (stepMeat.disabled || selectedValues(meatChecks).length) return;
+    stepMeat.scrollIntoView({ behavior: prefersReducedMotion.matches ? "auto" : "smooth", block: "start" });
+  }
+
   function updateSummary() {
-    updateMeatAvailability();
+    updateMeatAvailability(); // antes de updateSteps: puede destildar una carne
+    updateSteps();
     updateMeatPriceTags();
     updateBreadHint();
 
@@ -730,13 +789,19 @@ document.addEventListener("DOMContentLoaded", () => {
     r.addEventListener("change", () => {
       updateOtherVisibility();
       updateSummary();
-      if (r.value !== "other") showToast(`${EMOJI.people} ${r.value} personas seleccionadas`);
+      if (r.value !== "other") {
+        showToast(`${EMOJI.people} ${r.value} personas seleccionadas`);
+        scrollToMeatIfPending();
+      }
     })
   );
   otherInput.addEventListener("input", updateSummary);
   otherInput.addEventListener("change", () => {
     const v = parseInt(otherInput.value, 10);
-    if (Number.isFinite(v) && v > 0) showToast(`${EMOJI.people} ${v} personas seleccionadas`);
+    if (Number.isFinite(v) && v > 0) {
+      showToast(`${EMOJI.people} ${v} personas seleccionadas`);
+      scrollToMeatIfPending();
+    }
   });
   meatChecks.forEach((c) =>
     c.addEventListener("change", () => {
@@ -775,6 +840,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (veggieToggleInput) {
     veggieToggleInput.addEventListener("change", () => {
       veggieQtyWrap.hidden = !veggieToggleInput.checked;
+      if (veggiePhotos) veggiePhotos.hidden = !veggieToggleInput.checked;
       if (veggieToggleInput.checked) veggieQtyInput.focus();
       updateVeggiePriceText();
       updateSummary();
