@@ -2800,6 +2800,13 @@ section[id] {
   border-top: 1px dashed var(--line);
 }
 
+.veggie-desc {
+  margin: 0 0 12px;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
 .veggie-toggle {
   position: relative;
   display: flex;

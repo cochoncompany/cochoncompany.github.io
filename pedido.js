@@ -200,6 +200,15 @@ document.addEventListener("DOMContentLoaded", () => {
     return Math.ceil(qty / v.personasMaxPorPorcion);
   }
 
+  // "1 porción (rinde 5 a 6 personas)". Mostramos lo que rinde la porción y no
+  // la cantidad tipeada: si alguien pone "1" parecía que era para 1 persona.
+  function veggiePortionsLabel(portions) {
+    const v = PRECIOS.vegetariano;
+    const label = `${portions} ${portions > 1 ? "porciones" : "porción"}`;
+    if (!v || !v.personasMinPorPorcion || !v.personasMaxPorPorcion) return label;
+    return `${label} (rinde ${portions * v.personasMinPorPorcion} a ${portions * v.personasMaxPorPorcion} personas)`;
+  }
+
   // Returns { qty, portions, price, nombre, acompañamiento } once a valid
   // quantity is entered, null otherwise (toggle off, or qty not typed yet).
   function getVeggieSelection() {
@@ -230,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     const portions = portionsFor(qty);
     const total = portions * v.precioPorPorcion;
-    veggiePriceText.textContent = `${portions} ${portions > 1 ? "porciones" : "porción"} de Pulled shrooms — ${formatCurrency(total)}`;
+    veggiePriceText.textContent = `${veggiePortionsLabel(portions)} de Pulled shrooms — ${formatCurrency(total)}`;
   }
 
   function calculateBudget() {
@@ -241,13 +250,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function withVeggie(result) {
       if (!veggie) return result;
-      const portionsLabel = veggie.portions ? `${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"}` : "";
+      const portionsLabel = veggie.portions ? veggiePortionsLabel(veggie.portions) : "";
       const acompañamiento = veggie.acompañamiento ? `, con ${veggie.acompañamiento.toLowerCase()}` : "";
 
       if (veggie.price != null && result.total != null) {
         return {
           amountText: formatCurrency(result.total + veggie.price),
-          note: `${result.note} Incluye ${veggie.nombre} — ${portionsLabel} para ${veggie.qty} personas (${formatCurrency(veggie.price)})${acompañamiento}.`,
+          note: `${result.note} Incluye ${veggie.nombre} — ${portionsLabel}, ${formatCurrency(veggie.price)}${acompañamiento}.`,
         };
       }
       const amountText =
@@ -256,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
           : `${result.amountText} + vegetariano`;
       return {
         amountText,
-        note: `${result.note} Sumaste ${veggie.nombre} para ${veggie.qty} personas — te confirmamos ese costo por WhatsApp.`,
+        note: `${result.note} Sumaste ${veggie.nombre} — ${portionsLabel}. Te confirmamos ese costo por WhatsApp.`,
       };
     }
 
@@ -679,7 +688,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ["Carne", meats.length ? meats.join(", ") : null],
       ["Pan", breadLabel],
       ["Salsas", sauces.length ? `${sauces.length} — ${sauces.join(", ")}` : null],
-      ["Vegetariano", veggie ? `${veggie.nombre} — ${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"} (${veggie.qty} personas)` : null],
+      ["Vegetariano", veggie ? `${veggie.nombre} — ${veggiePortionsLabel(veggie.portions)}` : null],
       ["Modalidad", modalidad ? modalidad.value : null],
       ["Dirección", modalidad && modalidad.value === "Envío a domicilio" ? addressLabel : null],
       ["Fecha", dateInput.value ? formatDate(dateInput.value) : null],
@@ -828,7 +837,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (veggie) {
       const acompañamiento = veggie.acompañamiento ? ` (${veggie.acompañamiento})` : "";
       lines.push(
-        `${EMOJI.mushroom} Vegetariano: ${veggie.nombre} — ${veggie.portions} ${veggie.portions > 1 ? "porciones" : "porción"} para ${veggie.qty} personas${acompañamiento}`
+        `${EMOJI.mushroom} Vegetariano: ${veggie.nombre} — ${veggiePortionsLabel(veggie.portions)}, para ${veggie.qty} ${veggie.qty > 1 ? "invitados" : "invitado"} sin carne${acompañamiento}`
       );
     }
     if (budget.amountText && budget.amountText !== "—") lines.push(`${EMOJI.money} Presupuesto estimado: ${budget.amountText}`);
