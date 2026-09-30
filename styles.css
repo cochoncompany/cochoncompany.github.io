@@ -152,6 +152,29 @@ select {
   gap: 12px;
 }
 
+/* Entre tablet y desktop no entra todo en una línea: sacamos primero la
+   pill de carnes y después el subtítulo, así el botón nunca se parte. */
+.topbar__actions > * {
+  flex-shrink: 0;
+}
+
+.topbar__actions .btn,
+.brand__sub {
+  white-space: nowrap;
+}
+
+@media (max-width: 1240px) {
+  .price-pill {
+    display: none;
+  }
+}
+
+@media (max-width: 1060px) {
+  .brand__sub {
+    display: none;
+  }
+}
+
 .price-pill,
 .tag,
 .mini-pill {
