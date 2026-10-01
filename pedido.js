@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const meatChecks = form.querySelectorAll('input[name="carne"]');
   const breadChecks = form.querySelectorAll('input[name="pan"]');
   const sauceChecks = form.querySelectorAll('input[name="salsas"]');
+  const noSauceInput = document.getElementById("no-sauce-input");
   const modalidadRadios = form.querySelectorAll('input[name="modalidad"]');
   const addressWrap = document.getElementById("address-wrap");
   const addressInput = document.getElementById("address-input");
@@ -60,14 +61,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const veggieQtyInput = document.getElementById("veggie-qty-input");
   const veggiePriceText = document.getElementById("veggie-price-text");
 
-  // Pasos del formulario, en orden. Se desbloquean por dependencia: la carne
-  // necesita la cantidad de personas (precios y disponibilidad dependen de
-  // eso), y pan/salsas/datos necesitan la carne. Pan y salsas son opcionales,
-  // así que se abren juntos en vez de uno atrás del otro.
-  const [stepPeople, stepMeat, ...stepsAfterMeat] = form.querySelectorAll(".pedido__main > .field-block");
+  // Pasos del formulario, en orden. Se desbloquean de a uno: cada paso
+  // necesita el anterior completo (personas → carne → pan → salsas → datos).
+  const [stepPeople, stepMeat, stepBread, stepSauces, stepEvent] = form.querySelectorAll(".pedido__main > .field-block");
   const STEP_LOCKS = [
     { fieldset: stepMeat, message: "Elegí primero la cantidad de personas." },
-    ...stepsAfterMeat.map((fieldset) => ({ fieldset, message: "Elegí primero una carne." })),
+    { fieldset: stepBread, message: "Elegí primero una carne." },
+    { fieldset: stepSauces, message: "Elegí primero un pan." },
+    { fieldset: stepEvent, message: "Elegí primero tus salsas." },
   ];
   STEP_LOCKS.forEach(({ fieldset, message }) => {
     const note = document.createElement("p");
@@ -684,15 +685,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const addressValue = addressInput.value.trim();
     const hasAddress = addressValue.length > 0 && addressHasNumber(addressValue);
 
-    setStepLocked(stepMeat, !people);
-    stepsAfterMeat.forEach((fs) => setStepLocked(fs, !people || !meats.length));
+    // Cada paso cuenta como completo solo si el anterior también lo está.
+    const peopleDone = Boolean(people);
+    const meatDone = peopleDone && meats.length > 0;
+    const breadDone = meatDone && selectedValues(breadChecks).length > 0;
+    const saucesDone = breadDone && (selectedValues(sauceChecks).length > 0 || noSauceInput.checked);
+    const eventDone = saucesDone && Boolean(modalidad) && (!needsAddress || hasAddress);
 
-    const [stepBread, stepSauces, stepEvent] = stepsAfterMeat;
-    setStepDone(stepPeople, Boolean(people));
-    setStepDone(stepMeat, Boolean(people) && meats.length > 0);
-    setStepDone(stepBread, !stepBread.disabled && selectedValues(breadChecks).length > 0);
-    setStepDone(stepSauces, !stepSauces.disabled && selectedValues(sauceChecks).length > 0);
-    setStepDone(stepEvent, !stepEvent.disabled && Boolean(modalidad) && (!needsAddress || hasAddress));
+    setStepLocked(stepMeat, !peopleDone);
+    setStepLocked(stepBread, !meatDone);
+    setStepLocked(stepSauces, !breadDone);
+    setStepLocked(stepEvent, !saucesDone);
+
+    setStepDone(stepPeople, peopleDone);
+    setStepDone(stepMeat, meatDone);
+    setStepDone(stepBread, breadDone);
+    setStepDone(stepSauces, saucesDone);
+    setStepDone(stepEvent, eventDone);
   }
 
   // Después de elegir personas llevamos al paso de carne, pero solo la primera
@@ -746,7 +755,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ["Personas", people ? people.label : null],
       ["Carne", meats.length ? meats.join(", ") : null],
       ["Pan", breadLabel],
-      ["Salsas", sauces.length ? `${sauces.length} — ${sauces.join(", ")}` : null],
+      ["Salsas", sauces.length ? `${sauces.length} — ${sauces.join(", ")}` : noSauceInput.checked ? "Sin salsas" : null],
       ["Vegetariano", veggie ? `${veggie.nombre} — ${veggiePortionsLabel(veggie.portions)}` : null],
       ["Modalidad", modalidad ? modalidad.value : null],
       ["Dirección", modalidad && modalidad.value === "Envío a domicilio" ? addressLabel : null],
@@ -817,8 +826,16 @@ document.addEventListener("DOMContentLoaded", () => {
       showToast(c.checked ? `${EMOJI.bread} ${c.value} agregado` : `${EMOJI.remove} ${c.value} quitado`);
     })
   );
+  // "Sin salsas" y las salsas se excluyen entre sí.
+  noSauceInput.addEventListener("change", () => {
+    if (noSauceInput.checked) sauceChecks.forEach((c) => (c.checked = false));
+    updateSummary();
+    popChip(noSauceInput);
+    showToast(noSauceInput.checked ? `${EMOJI.spoon} Sin salsas` : `${EMOJI.remove} Sin salsas quitado`);
+  });
   sauceChecks.forEach((c) =>
     c.addEventListener("change", () => {
+      if (c.checked) noSauceInput.checked = false;
       updateSummary();
       popChip(c);
       showToast(c.checked ? `${EMOJI.spoon} ${c.value} agregada` : `${EMOJI.remove} ${c.value} quitada`);
@@ -900,6 +917,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lines.push(`${EMOJI.bread} Pan: ${breads.join(", ")}${panesNote}${repartoNote}`);
     }
     if (sauces.length) lines.push(`${EMOJI.spoon} Salsas (${sauces.length}): ${sauces.join(", ")}`);
+    else if (noSauceInput.checked) lines.push(`${EMOJI.spoon} Salsas: sin salsas`);
     if (veggie) {
       const acompañamiento = veggie.acompañamiento ? ` (${veggie.acompañamiento})` : "";
       lines.push(

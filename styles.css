@@ -2249,6 +2249,42 @@ section[id] {
   display: block;
 }
 
+/* "Sin salsas": separada del resto para que no se lea como una salsa más. */
+.sauce-optout {
+  margin-top: 16px;
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.sauce-optout__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.sauce-optout__divider::before,
+.sauce-optout__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.choice-chip--optout {
+  width: min(100%, 260px);
+}
+
+.choice-chip--optout span {
+  border-style: dashed;
+  background: transparent;
+}
+
 .choice-chip input {
   position: absolute;
   opacity: 0;
