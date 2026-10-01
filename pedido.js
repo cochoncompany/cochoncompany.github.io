@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     note.textContent = message;
     fieldset.querySelector(".field-block__head").after(note);
   });
+  const breadLockNote = stepBread.querySelector(".field-block__lock");
   form.querySelectorAll(".field-block__n").forEach((n) => {
     n.dataset.n = n.textContent;
   });
@@ -686,8 +687,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const hasAddress = addressValue.length > 0 && addressHasNumber(addressValue);
 
     // Cada paso cuenta como completo solo si el anterior también lo está.
+    // Si sumó la opción vegetariana, tiene que indicar cuántos invitados
+    // (o quitarla) antes de pasar al pan.
+    const veggiePending = Boolean(veggieToggleInput) && veggieToggleInput.checked && !getVeggieSelection();
     const peopleDone = Boolean(people);
-    const meatDone = peopleDone && meats.length > 0;
+    const meatDone = peopleDone && meats.length > 0 && !veggiePending;
+
+    if (veggieQtyWrap) veggieQtyWrap.classList.toggle("veggie-qty--pending", veggiePending);
+    breadLockNote.textContent =
+      meats.length && veggiePending
+        ? "Completá cuántos invitados no comen carne, o quitá la opción vegetariana."
+        : "Elegí primero una carne.";
     const breadDone = meatDone && selectedValues(breadChecks).length > 0;
     const saucesDone = breadDone && (selectedValues(sauceChecks).length > 0 || noSauceInput.checked);
     const eventDone = saucesDone && Boolean(modalidad) && (!needsAddress || hasAddress);
@@ -771,7 +781,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const needsAddress = Boolean(modalidad) && modalidad.value === "Envío a domicilio";
     const addressValue = addressInput.value.trim();
     const hasAddress = addressValue.length > 0 && addressHasNumber(addressValue);
-    const basicsReady = Boolean(people) && meats.length > 0 && Boolean(modalidad);
+    const veggiePending = Boolean(veggieToggleInput) && veggieToggleInput.checked && !veggie;
+    const basicsReady = Boolean(people) && meats.length > 0 && !veggiePending && Boolean(modalidad);
     const ready = basicsReady && (!needsAddress || hasAddress);
 
     submitBtn.disabled = !ready;
@@ -781,6 +792,8 @@ document.addEventListener("DOMContentLoaded", () => {
       validationMsg.textContent = addressValue
         ? "Falta el número de la calle en la dirección para poder enviar."
         : "Falta la dirección de envío para poder enviar.";
+    } else if (veggiePending) {
+      validationMsg.textContent = "Completá cuántos invitados no comen carne, o quitá la opción vegetariana.";
     } else {
       validationMsg.textContent = "Elegí cantidad de personas, una carne y retiro/envío para poder enviar.";
     }
@@ -889,7 +902,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addressValue = addressInput.value.trim();
     const hasAddress = addressValue.length > 0 && addressHasNumber(addressValue);
 
-    if (!people || !meats.length || !modalidad || (needsAddress && !hasAddress)) {
+    if (submitBtn.disabled) {
       updateSummary();
       validationMsg.hidden = false;
       validationMsg.scrollIntoView({ behavior: "smooth", block: "center" });

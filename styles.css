@@ -2992,6 +2992,14 @@ section[id] {
   border: 1px dashed var(--line);
 }
 
+.veggie-qty--pending {
+  border-color: rgba(255, 207, 132, 0.6);
+}
+
+.veggie-qty--pending input {
+  border-color: rgba(255, 207, 132, 0.5);
+}
+
 .veggie-qty label {
   display: block;
   margin-bottom: 8px;
