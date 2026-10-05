@@ -1,17 +1,18 @@
 /* ============================================================
-   PRECIOS COCHON & CO. — fuente única de precios y costos
+   PRECIOS COCHON & CO.
    ------------------------------------------------------------
-   Este archivo es el único lugar donde hay que tocar números.
-   pedido.js lo lee para armar el presupuesto en vivo del
-   formulario — no toca precios en ningún otro lado.
+   Los precios VIGENTES están en precios.json, que se edita desde
+   /admin.html (el panel guarda el archivo directo en GitHub).
+   Los números de este archivo son solo el RESPALDO por si
+   precios.json no carga.
 
-   Cómo actualizar:
-   - Para cambiar un precio, reemplazá el número.
-   - Si todavía no tenés el precio de algo, dejá `null`:
-     el formulario va a mostrar "consultanos" en su lugar,
-     nunca un precio inventado.
+   - `null` = "consultanos": el formulario nunca inventa un precio.
+   - La estructura (qué cantidades de personas hay, qué carnes,
+     nombres) se define acá. Desde el panel solo se editan números,
+     así que agregar una cantidad nueva requiere tocar este archivo
+     Y los botones de pedido.html.
 
-   Última carga: tabla "PRECIOS MUNDIAL JUNIO/JULIO 2026"
+   Respaldo: tabla "PRECIOS MUNDIAL JUNIO/JULIO 2026"
    ============================================================ */
 
 window.PRECIOS_COCHON = {
@@ -35,8 +36,7 @@ window.PRECIOS_COCHON = {
     100: { bondiola: null,   cerdo: 689000, ternera: 970000, panes: 400, salsasIncluidas: 9 },
   },
 
-  // Solomillo: no estaba en la tabla que pasaste. Cargar acá cuando
-  // tengas el precio (podés agregar más cantidades si hace falta).
+  // Solomillo: todavía sin precio.
   solomillo: {
     5: null,
     10: null,
@@ -61,3 +61,53 @@ window.PRECIOS_COCHON = {
     acompañamiento: "Coleslaw (en lugar de salsas)",
   },
 };
+
+// Copia `remoto` sobre `local` solo en claves que ya existen en `local`
+// y con el mismo tipo (número/null o texto). Así la base puede cambiar
+// precios pero nunca la estructura que el formulario espera.
+window.mergePreciosCochon = function mergePreciosCochon(local, remoto) {
+  if (!remoto || typeof remoto !== "object") return local;
+  const isPlain = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
+  const out = Array.isArray(local) ? local.slice() : { ...local };
+  Object.keys(local).forEach((k) => {
+    if (!Object.prototype.hasOwnProperty.call(remoto, k)) return;
+    const l = local[k];
+    const r = remoto[k];
+    if (isPlain(l)) {
+      if (isPlain(r)) out[k] = mergePreciosCochon(l, r);
+    } else if (typeof l === "number" || l === null) {
+      if (r === null || (typeof r === "number" && Number.isFinite(r) && r >= 0)) out[k] = r;
+    } else if (typeof l === "string" && typeof r === "string") {
+      out[k] = r;
+    }
+  });
+  return out;
+};
+
+// Promesa que resuelve con los precios a usar: los de precios.json si
+// carga a tiempo, si no los de respaldo de arriba.
+window.PRECIOS_COCHON_LISTO = (function cargarPreciosJson() {
+  const local = window.PRECIOS_COCHON;
+  if (window.COCHON_PRECIOS_SKIP_FETCH || !window.fetch) return Promise.resolve(local);
+
+  const ctrl = typeof AbortController === "function" ? new AbortController() : null;
+  const timer = setTimeout(() => ctrl && ctrl.abort(), 4000);
+
+  // ?t= evita la caché de GitHub Pages (10 min): un cambio del panel se ve
+  // apenas termina de publicarse, no 10 minutos después.
+  return fetch(`precios.json?t=${Date.now()}`, {
+    cache: "no-store",
+    signal: ctrl ? ctrl.signal : undefined,
+  })
+    .then((res) => (res.ok ? res.json() : Promise.reject(new Error(`HTTP ${res.status}`))))
+    .then((datos) => {
+      const merged = window.mergePreciosCochon(local, datos);
+      window.PRECIOS_COCHON = merged;
+      return merged;
+    })
+    .catch((err) => {
+      console.warn("Precios: usando respaldo local.", err);
+      return local;
+    })
+    .finally(() => clearTimeout(timer));
+})();

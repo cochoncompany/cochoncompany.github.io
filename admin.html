@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Precios · Cochon & Co.</title>
+    <link rel="icon" href="assets/img/favicon/favicon.ico" sizes="any" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        min-height: 100vh;
+        background-attachment: fixed;
+      }
+      .adm {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 16px 120px;
+      }
+      /* styles.css le da 88px de padding a todo <section>; acá no. */
+      .adm section {
+        padding: 0;
+      }
+      .adm .adm__card {
+        padding: 24px;
+      }
+      .adm h1 {
+        font-size: clamp(1.6rem, 4vw, 2.2rem);
+        letter-spacing: -0.02em;
+      }
+      .adm__muted {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+      .adm__card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+        padding: 24px;
+      }
+      .adm__brand {
+        display: block;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        margin-bottom: 8px;
+      }
+
+      /* Login */
+      .adm .adm-login {
+        position: relative;
+        max-width: 420px;
+        margin: max(4vh, 16px) auto 0;
+        padding: 40px 32px 32px;
+        text-align: center;
+        background: linear-gradient(180deg, rgba(255, 246, 236, 0.08), rgba(255, 246, 236, 0.03));
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+        overflow: hidden;
+      }
+      .adm-login::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--accent), var(--hot), transparent);
+      }
+      .adm-login__logo {
+        width: 76px;
+        height: auto;
+        margin: 0 auto 18px;
+      }
+      .adm-login .adm__brand {
+        margin-bottom: 6px;
+      }
+      .adm-login h1 {
+        font-size: 2rem;
+      }
+      .adm-login__sub {
+        margin-top: 6px;
+      }
+      .adm-login form {
+        display: grid;
+        gap: 16px;
+        margin-top: 28px;
+        text-align: left;
+      }
+      .adm-login .adm-check {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+      }
+      .adm .adm-check input {
+        flex: none;
+        width: 18px;
+        height: 18px;
+        margin: 0;
+        accent-color: var(--accent);
+      }
+      .adm-login .adm-btn--primary {
+        margin-top: 4px;
+        padding: 14px 20px;
+        font-size: 1rem;
+      }
+      .adm-login__foot {
+        margin-top: 20px;
+        font-size: 0.8rem;
+      }
+      .adm-login__foot a {
+        color: var(--accent-2);
+        text-underline-offset: 2px;
+      }
+      .adm-login__foot a:hover {
+        color: var(--accent);
+      }
+      .adm label {
+        display: grid;
+        gap: 6px;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      .adm input {
+        font: inherit;
+        color: var(--text);
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 11px 12px;
+        width: 100%;
+      }
+      .adm input:focus {
+        outline: 2px solid var(--accent);
+        outline-offset: 1px;
+        border-color: transparent;
+      }
+      .adm input:disabled {
+        opacity: 0.35;
+      }
+      .adm-btn {
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        border-radius: 999px;
+        padding: 11px 20px;
+        border: 1px solid var(--line);
+        background: var(--panel-2);
+        color: var(--text);
+        transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+      }
+      .adm-btn:not(:disabled):hover {
+        border-color: rgba(255, 240, 226, 0.28);
+      }
+      .adm-btn:not(:disabled):active {
+        transform: translateY(1px);
+      }
+      .adm-btn--primary {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #1b120c;
+      }
+      .adm-btn--primary:not(:disabled):hover {
+        background: var(--accent-2);
+        border-color: var(--accent-2);
+      }
+      .adm-btn:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .adm__msg {
+        min-height: 1.3em;
+        font-size: 0.9rem;
+      }
+      .adm__msg--error {
+        color: #ff9c86;
+      }
+      .adm__msg--ok {
+        color: var(--ok);
+      }
+
+      /* Editor */
+      .adm-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px 24px;
+        margin-bottom: 24px;
+      }
+      .adm-head__who {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .adm-help {
+        margin-bottom: 20px;
+      }
+      .adm-help li + li {
+        margin-top: 4px;
+      }
+      .adm-section {
+        margin-top: 28px;
+      }
+      .adm-section h2 {
+        font-size: 1.15rem;
+        margin-bottom: 4px;
+      }
+      .adm-section > .adm__muted {
+        margin-bottom: 14px;
+      }
+      .adm-table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-sm);
+      }
+      .adm-table {
+        width: 100%;
+        min-width: 620px;
+        border-collapse: collapse;
+        font-variant-numeric: tabular-nums;
+      }
+      .adm-table th,
+      .adm-table td {
+        padding: 8px 10px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+      }
+      .adm-table tbody tr:last-child td,
+      .adm-table tbody tr:last-child th {
+        border-bottom: 0;
+      }
+      .adm-table thead th {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        font-weight: 600;
+        background: var(--bg-2);
+      }
+      .adm-table tbody th {
+        position: sticky;
+        left: 0;
+        background: var(--bg-2);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .adm-table td input {
+        padding: 8px 10px;
+        text-align: right;
+      }
+      .adm-table .adm-col-sm {
+        width: 92px;
+      }
+      .adm-fields {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 14px;
+      }
+      .adm input.is-changed {
+        border-color: var(--hot);
+        background: rgba(255, 122, 47, 0.12);
+      }
+      .adm input.is-invalid {
+        border-color: #ff6b6b;
+        background: rgba(255, 80, 80, 0.15);
+      }
+      .adm-was {
+        display: block;
+        font-size: 0.72rem;
+        color: var(--muted);
+        text-align: right;
+        margin-top: 2px;
+        min-height: 1em;
+      }
+      .adm-history {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .adm-history li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .adm-history li:last-child {
+        border-bottom: 0;
+      }
+
+      .adm-bar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 20;
+        background: rgba(15, 11, 9, 0.92);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--line);
+      }
+      .adm-bar__inner {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .adm-bar__actions {
+        display: flex;
+        gap: 10px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="adm">
+      <!-- Cargando -->
+      <p id="view-loading" class="adm__muted">Cargando…</p>
+
+      <!-- Login -->
+      <section id="view-login" class="adm__card adm-login" hidden>
+        <img class="adm-login__logo" src="assets/img/logo/cochon-co-logo.webp" alt="" />
+        <span class="adm__brand">Cochon & Co.</span>
+        <h1>Panel de precios</h1>
+        <p class="adm__muted adm-login__sub">Lo que guardes acá se publica en la web.</p>
+        <form id="login-form">
+          <label>Tu nombre<input type="text" id="login-name" autocomplete="name" placeholder="Ej: Fede" /></label>
+          <label>Clave de acceso<input type="password" id="login-token" autocomplete="current-password" required /></label>
+          <label class="adm-check">
+            <input type="checkbox" id="login-remember" checked />
+            Recordarme en este dispositivo
+          </label>
+          <button class="adm-btn adm-btn--primary" type="submit">Entrar</button>
+          <p class="adm__msg" id="login-msg" role="status"></p>
+        </form>
+        <p class="adm__muted adm-login__foot">
+          ¿No tenés la clave? Escribinos a <a href="mailto:hola@raven3.com.ar">hola@raven3.com.ar</a>
+        </p>
+      </section>
+
+      <!-- Editor -->
+      <section id="view-editor" hidden>
+        <header class="adm-head">
+          <div>
+            <span class="adm__brand">Cochon & Co.</span>
+            <h1>Precios</h1>
+            <p class="adm__muted" id="last-update"></p>
+          </div>
+          <div class="adm-head__who">
+            <span class="adm__muted" id="who"></span>
+            <button class="adm-btn" type="button" id="logout-btn">Salir</button>
+          </div>
+        </header>
+
+        <div class="adm__card adm-help adm__muted">
+          <ul style="margin: 0; padding-left: 18px">
+            <li>Tocá <strong>Guardar</strong> y en 1–2 minutos los precios nuevos se ven en la web.</li>
+            <li>Dejá un casillero <strong>vacío</strong> si no tenés el precio: la web muestra “Consultanos”.</li>
+            <li>Si te equivocás, abajo de todo está el historial para volver a una versión anterior.</li>
+          </ul>
+        </div>
+
+        <form id="editor-form" novalidate>
+          <div class="adm-section">
+            <h2>Pedido completo según personas</h2>
+            <p class="adm__muted">Precio total del pedido en pesos. Panes y salsas = lo que incluye cada tamaño.</p>
+            <div class="adm-table-wrap">
+              <table class="adm-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Personas</th>
+                    <th scope="col">Cerdo</th>
+                    <th scope="col">Ternera</th>
+                    <th scope="col">Bondiola</th>
+                    <th scope="col" class="adm-col-sm">Panes</th>
+                    <th scope="col" class="adm-col-sm">Salsas incl.</th>
+                  </tr>
+                </thead>
+                <tbody id="brackets-body"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="adm-section">
+            <h2>Solomillo</h2>
+            <p class="adm__muted">Solo para grupos chicos.</p>
+            <div class="adm-fields" id="solomillo-fields"></div>
+          </div>
+
+          <div class="adm-section">
+            <h2>Salsas</h2>
+            <p class="adm__muted">Cuánto se cobra cada salsa por encima de las incluidas.</p>
+            <div class="adm-fields" id="salsa-fields"></div>
+          </div>
+
+          <div class="adm-section">
+            <h2>Vegetariano (Pulled shrooms)</h2>
+            <p class="adm__muted">Se vende por porción.</p>
+            <div class="adm-fields" id="veggie-fields"></div>
+          </div>
+        </form>
+
+        <div class="adm-section">
+          <h2>Historial</h2>
+          <p class="adm__muted">Versiones anteriores. “Cargar” la pone en la tabla; no se publica hasta que tocás Guardar.</p>
+          <div class="adm__card">
+            <ul class="adm-history" id="history-list"></ul>
+          </div>
+        </div>
+
+        <div class="adm-bar">
+          <div class="adm-bar__inner">
+            <span class="adm__msg" id="save-msg" role="status">Sin cambios</span>
+            <div class="adm-bar__actions">
+              <button class="adm-btn" type="button" id="discard-btn" disabled>Descartar</button>
+              <button class="adm-btn adm-btn--primary" type="button" id="save-btn" disabled>Guardar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      // El panel lee precios.json desde GitHub (versión exacta), no desde la web publicada.
+      window.COCHON_PRECIOS_SKIP_FETCH = true;
+    </script>
+    <script src="precios.js?v=20261004"></script>
+    <script src="admin.js?v=20261004"></script>
+  </body>
+</html>

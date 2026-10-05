@@ -1,6 +1,10 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const form = document.getElementById("pedido-form");
   if (!form) return;
+
+  // precios.js trae precios.json (lo edita el panel /admin.html) y cae al
+  // respaldo local si no carga; esperamos antes de armar el formulario.
+  const preciosCargados = await (window.PRECIOS_COCHON_LISTO || Promise.resolve(window.PRECIOS_COCHON));
 
   const WHATSAPP_NUMBER = "5491136441214";
 
@@ -82,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  const PRECIOS = window.PRECIOS_COCHON || {
+  const PRECIOS = preciosCargados || {
     porPersonas: {},
     solomillo: {},
     carnesGrupoChico: [],
