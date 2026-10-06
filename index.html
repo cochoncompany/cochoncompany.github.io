@@ -209,6 +209,7 @@
         <div class="topbar__actions">
           <a
             class="rating-badge"
+            data-resenas="badge"
             href="https://www.google.com/maps?cid=4770668792370405659"
             target="_blank"
             rel="noreferrer"
@@ -288,7 +289,7 @@
           </div>
 
           <div class="hero__proof" aria-label="Datos clave del servicio">
-            <a class="tag tag--rating" href="#resenas">★ 5.0 en Google (22 reseñas)</a>
+            <a class="tag tag--rating" href="#resenas" data-resenas="tag">★ 5.0 en Google (22 reseñas)</a>
             <!-- <span class="tag">Desde 5 personas</span> -->
             <!-- <span class="tag">Cerdo y ternera</span> -->
             <span class="tag">Zona Norte y CABA</span>
@@ -324,9 +325,9 @@
 
           <div class="reviews__summary fade-up">
             <div class="reviews__score">
-              <span class="reviews__number">5.0</span>
-              <span class="reviews__stars" aria-hidden="true">★★★★★</span>
-              <span class="reviews__count">sobre 22 reseñas en Google</span>
+              <span class="reviews__number" data-resenas="promedio">5.0</span>
+              <span class="reviews__stars" aria-hidden="true" data-resenas="estrellas">★★★★★</span>
+              <span class="reviews__count" data-resenas="total">sobre 22 reseñas en Google</span>
             </div>
             <div class="reviews__actions">
               <a
@@ -1036,6 +1037,7 @@
               <span class="mini-pill">Boulogne · San Isidro</span>
               <a
                 class="mini-pill mini-pill--link"
+                data-resenas="tag"
                 href="https://www.google.com/maps?cid=4770668792370405659"
                 target="_blank"
                 rel="noreferrer"
@@ -1141,6 +1143,7 @@
       <span>Pedí ahora</span>
     </a>
 
-    <script src="main.js" defer></script>
+    <script src="resenas.js?v=20261006" defer></script>
+    <script src="main.js?v=20261006" defer></script>
   </body>
 </html>

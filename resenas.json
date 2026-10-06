@@ -1,0 +1,158 @@
+{
+  "resenas": [
+    {
+      "id": "enzo-galindo-percaz",
+      "nombre": "Enzo Galindo Percaz",
+      "estrellas": 5,
+      "texto": "Impecable el trabajo de Fede, muy buena calidad y superó ampliamente nuestras expectativas. Les diría que es una garantía para quedar bien con todos los invitados que acudan al evento.",
+      "fecha": "2026-09-27"
+    },
+    {
+      "id": "marcela-muracciole",
+      "nombre": "Marcela Muracciole",
+      "estrellas": 5,
+      "texto": "Excelente calidad, impecable servicio, puntuales en la entrega y muy buen precio. Altamente recomendable. Volveremos a contratarlos.",
+      "fecha": "2026-09-27"
+    },
+    {
+      "id": "florencia-gutierrez",
+      "nombre": "Florencia Gutierrez",
+      "estrellas": 5,
+      "texto": "Lo pedí para mi cumpleaños para 10 personas y fue un éxito! Inclusive sobró, los panes súper ricos y artesanales. El pernil de cerdo muy sabroso.",
+      "fecha": "2026-09-09"
+    },
+    {
+      "id": "nico-gomez",
+      "nombre": "Nico Gomez",
+      "estrellas": 5,
+      "texto": "El pernil muy tierno y rico, las salsas muy buenas con el pan incluido. Excelente servicio.",
+      "fecha": "2026-09-09"
+    },
+    {
+      "id": "susana-acevedo-urturi",
+      "nombre": "Susana Acevedo Urturi",
+      "estrellas": 5,
+      "texto": "Un manjar!!! Todo!!!! El pernil, su punto de cocción, su sabor, las salsas, el pancito!!! IMPECABLE TODO",
+      "fecha": "2026-07-30"
+    },
+    {
+      "id": "emilia-rodriguez-bruunet",
+      "nombre": "Emilia Rodriguez Bruunet",
+      "estrellas": 5,
+      "texto": "La verdad que recomendadísimo, si la estás dudando pedí de acá. Hice un festejo para 60 personas y todos quedaron fascinados con el pernil. Hasta el día de hoy me siguen hablando de la comida. La presentación es hermosa y las salsas son riquísimas (recomiendo la de mostaza y miel, se acabó rapidísimo). Además la atención de Fede es muy buena!! Mi experiencia fue excelente 🙌🏻🙌🏻",
+      "fecha": "2026-07-30"
+    },
+    {
+      "id": "sabrina-biscardi",
+      "nombre": "Sabrina Biscardi",
+      "estrellas": 5,
+      "texto": "Excelente! Le hice el pedido de un día para otro, y muy buena atención! Todo riquísimo!",
+      "fecha": "2026-07-30"
+    },
+    {
+      "id": "agustina-tiscornia",
+      "nombre": "Agustina Tiscornia",
+      "estrellas": 5,
+      "texto": "Excelente servicio, la pata riquísima al igual que las salsas, y el pan increíble!!!!",
+      "fecha": "2026-06-30"
+    },
+    {
+      "id": "magra-magra",
+      "nombre": "magra magra",
+      "estrellas": 5,
+      "texto": "Todo muy bien, rico, en horario, abundante y buena calidad!!! Lo recomiendo! Gracias chicos!",
+      "fecha": "2026-05-30"
+    },
+    {
+      "id": "melany-petrongolo",
+      "nombre": "Melany Petrongolo",
+      "estrellas": 5,
+      "texto": "Pedí bondiola braseada, muuuy rico! Súper tierna. Los pancitos y las salsas también de 10. Me lo enviaron a domicilio. Muy recomendado!",
+      "fecha": "2026-04-30"
+    },
+    {
+      "id": "nicolas",
+      "nombre": "Nicolas",
+      "estrellas": 5,
+      "texto": "Excelente calidad y servicio, todo recién hecho, espectacular, altamente recomendable, gracias.",
+      "fecha": "2026-03-30"
+    },
+    {
+      "id": "ofelia-tellier",
+      "nombre": "Ofelia Tellier",
+      "estrellas": 5,
+      "texto": "",
+      "fecha": "2026-03-02"
+    },
+    {
+      "id": "eliana-buck",
+      "nombre": "Eliana Buck",
+      "estrellas": 5,
+      "texto": "Buenísimo y riquísimo!!!! Comimos con toda mi familia después de navidades y no pudo estar mejor! Las salsas son riquísimas, se los recomiendo a todos! Gracias por la buena hospitalidad y la rica comida :)",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "theresa-hoffzimmer",
+      "nombre": "Theresa Hoffzimmer",
+      "estrellas": 5,
+      "texto": "Este pernil casero que probé es una verdadera joya de la cocina. Se nota que el corte de carne fue elegido con mucho cuidado. La textura del pernil estaba perfectamente tierna, jugosa y con ese punto de cocción ideal que logra deshacerse en la boca. Lo recomiendo 100% encima Fede es muy atento y puntual con los pedidos!",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "argos-maderas",
+      "nombre": "Argos Maderas",
+      "estrellas": 5,
+      "texto": "Espectacular! Pedí 3 perniles para el cumpleaños sorpresa de mi papá y todos quedaron locos! Te da la opción de entrega fría o caliente, yo elegí que ya vengan calientes y vinieron listos para abrir y servir. Las salsas están muy bien logradas y el pan... el pan es una nube, una locura todo.",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "nati-ovalles-tellier",
+      "nombre": "Nati Ovalles Tellier",
+      "estrellas": 5,
+      "texto": "Excelente todo! Desde la atención hasta el pernil. Superó nuestras expectativas!",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "ruth-lack",
+      "nombre": "Ruth Lack",
+      "estrellas": 5,
+      "texto": "Éramos poquitos y pedimos una bondiola para comer fría el 25 y fue un éxito, una textura suave con un gustito medio ahumado que le quedó excelente!! Sin dudas voy a volver a pedir una!!",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "guido-urruchua",
+      "nombre": "Guido Urruchua",
+      "estrellas": 5,
+      "texto": "Impecable todo, te resuelve el evento.",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "juan-martin-llado",
+      "nombre": "Juan Martin Llado",
+      "estrellas": 5,
+      "texto": "Gracias por llegar a zona norte! De las mejores cosas que comí este 2026. Felicitaciones a los creadores de semejante producto 🎉",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "juan-ignacio-verona",
+      "nombre": "Juan Ignacio Verona",
+      "estrellas": 5,
+      "texto": "Pernil, salsas y panes un 10. Pedimos para una reunión de trabajo y salió todo perfecto. Ganaron varios clientes por acá.",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "rodrigo-sero",
+      "nombre": "Rodrigo Sero",
+      "estrellas": 5,
+      "texto": "Excelentes productos, los pedimos para un casamiento y todo perfecto! Además de buena calidad la atención fue muy buena. Recomiendo 100%",
+      "fecha": "2026-01-30"
+    },
+    {
+      "id": "pablo-de-vera",
+      "nombre": "Pablo de Vera",
+      "estrellas": 5,
+      "texto": "Excelente calidad de los productos y un sabor espectacular!! Los condimentos un 100 super recomendado!!",
+      "fecha": "2026-01-30"
+    }
+  ]
+}

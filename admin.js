@@ -1,7 +1,7 @@
 /* ============================================================
-   Panel de precios (admin.html)
+   Panel de precios y reseñas (admin.html)
    ------------------------------------------------------------
-   Edita precios.json directamente en el repo vía la API de
+   Edita precios.json y resenas.json directamente en el repo vía la API de
    GitHub. La "clave de acceso" es un token de GitHub con
    permiso de escritura SOLO sobre este repo: sin ella se puede
    mirar el panel pero no guardar. Cada guardado es un commit,
@@ -18,6 +18,7 @@
   const REPO = "cochoncompany/cochoncompany.github.io";
   const BRANCH = "gh-pages";
   const FILE = "precios.json";
+  const RESENAS_FILE = "resenas.json";
   const STORAGE_KEY = "cochon-precios-acceso";
 
   let token = "";
@@ -53,8 +54,8 @@
     return btoa(bin);
   }
 
-  async function fetchFile(ref) {
-    const data = await gh(`/contents/${FILE}?ref=${encodeURIComponent(ref)}`);
+  async function fetchFile(ref, file = FILE) {
+    const data = await gh(`/contents/${file}?ref=${encodeURIComponent(ref)}`);
     return { sha: data.sha, datos: JSON.parse(decodeBase64Utf8(data.content)) };
   }
 
@@ -369,6 +370,408 @@
     loadHistory();
   }
 
+  // ---------- Reseñas ----------
+  // Cada alta, edición o baja se publica en el momento (un commit por
+  // acción). Si alguien guardó otra reseña en el medio, se vuelve a
+  // leer resenas.json y se aplica la misma acción sobre lo nuevo.
+  const R = window.ResenasCochon;
+  const POR_PAGINA = 5;
+  let resenas = [];
+  let resenasSha = null;
+  let editandoId = null;
+  let pagina = 1;
+  let busqueda = "";
+  let ocupado = false;
+
+  const fechaCortaFmt = new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "short", year: "numeric" });
+  const normalizar = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+  function hoyIso() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+  function formatFecha(iso) {
+    if (!iso) return "—";
+    const [y, m, d] = iso.split("-").map(Number);
+    return fechaCortaFmt.format(new Date(y, m - 1, d));
+  }
+  function nuevoId(nombre) {
+    const slug = normalizar(nombre).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
+    return `${slug || "resena"}-${Date.now().toString(36)}`;
+  }
+
+  // Envuelve en <mark> lo que coincide con la búsqueda (ignorando tildes).
+  function resaltar(texto, q) {
+    const frag = document.createDocumentFragment();
+    if (!q) {
+      frag.append(texto);
+      return frag;
+    }
+    let norm = "";
+    const origen = []; // posición en `norm` → posición en `texto`
+    for (let i = 0; i < texto.length; i++) {
+      const n = normalizar(texto[i]);
+      norm += n;
+      for (let j = 0; j < n.length; j++) origen.push(i);
+    }
+    let desde = 0;
+    let at = norm.indexOf(q);
+    while (at !== -1) {
+      const ini = origen[at];
+      const fin = origen[at + q.length - 1] + 1;
+      frag.append(texto.slice(desde, ini));
+      const mark = document.createElement("mark");
+      mark.textContent = texto.slice(ini, fin);
+      frag.append(mark);
+      desde = fin;
+      at = norm.indexOf(q, at + q.length);
+    }
+    frag.append(texto.slice(desde));
+    return frag;
+  }
+
+  // ----- Formulario -----
+  const starLabels = [...document.querySelectorAll("#resena-estrellas label")];
+  function estrellasElegidas() {
+    const checked = document.querySelector('#resena-estrellas input:checked');
+    return checked ? Number(checked.value) : 5;
+  }
+  function pintarEstrellas(n) {
+    starLabels.forEach((l, i) => l.classList.toggle("is-on", i < n));
+  }
+  function setEstrellas(n) {
+    $(`est-${n}`).checked = true;
+    pintarEstrellas(n);
+    $("estrellas-valor").textContent = `${n} de 5`;
+  }
+
+  function datosDelForm() {
+    return {
+      nombre: $("resena-nombre").value.trim().replace(/\s+/g, " "),
+      estrellas: estrellasElegidas(),
+      texto: $("resena-texto").value.trim(),
+      fecha: $("resena-fecha").value,
+    };
+  }
+
+  function formSucio() {
+    const d = datosDelForm();
+    if (editandoId) {
+      const r = resenas.find((x) => x.id === editandoId);
+      return !!r && (r.nombre !== d.nombre || r.estrellas !== d.estrellas || r.texto !== d.texto || r.fecha !== d.fecha);
+    }
+    return !!(d.nombre || d.texto);
+  }
+
+  function resetForm() {
+    editandoId = null;
+    $("resena-form").reset();
+    $("resena-fecha").value = hoyIso();
+    setEstrellas(5);
+    $("resena-form").classList.remove("is-editing");
+    $("resena-form-title").textContent = "Sumar reseña";
+    $("resena-submit").textContent = "Publicar reseña";
+    $("resena-cancel").hidden = true;
+    $("resena-nombre").classList.remove("is-invalid");
+    renderTabla();
+  }
+
+  function editar(r) {
+    if (editandoId !== r.id && formSucio() && !window.confirm("Tenés una reseña a medio escribir. ¿Descartarla?")) return;
+    editandoId = r.id;
+    $("resena-nombre").value = r.nombre;
+    $("resena-texto").value = r.texto;
+    $("resena-fecha").value = r.fecha;
+    setEstrellas(r.estrellas);
+    $("resena-form").classList.add("is-editing");
+    $("resena-form-title").textContent = `Editar reseña de ${r.nombre}`;
+    $("resena-submit").textContent = "Guardar cambios";
+    $("resena-cancel").hidden = false;
+    setMsg($("resena-msg"), "");
+    renderTabla();
+    $("resena-form").scrollIntoView({ behavior: "smooth", block: "start" });
+    $("resena-nombre").focus({ preventScroll: true });
+  }
+
+  // ----- Datos -----
+  async function loadResenas() {
+    const file = await fetchFile(BRANCH, RESENAS_FILE);
+    resenasSha = file.sha;
+    resenas = R.normalizarResenas(file.datos) || [];
+    renderResenas();
+  }
+
+  // `cambio` recibe la lista actual y devuelve la nueva.
+  async function publicarResenas(cambio, mensaje) {
+    ocupado = true;
+    renderTabla();
+    $("resena-submit").disabled = true;
+    try {
+      for (let intento = 0; ; intento++) {
+        const nueva = R.normalizarResenas({ resenas: cambio(resenas) });
+        try {
+          const res = await gh(`/contents/${RESENAS_FILE}`, {
+            method: "PUT",
+            body: JSON.stringify({
+              message: `reseñas: ${mensaje} desde el panel${editorName ? ` (${editorName})` : ""}`,
+              content: encodeBase64Utf8(JSON.stringify({ resenas: nueva }, null, 2) + "\n"),
+              sha: resenasSha,
+              branch: BRANCH,
+            }),
+          });
+          resenasSha = res.content.sha;
+          resenas = nueva;
+          return null;
+        } catch (err) {
+          if ((err.status === 409 || err.status === 422) && intento === 0) {
+            await loadResenas(); // otra persona guardó en el medio: reintentar sobre lo nuevo
+            continue;
+          }
+          throw err;
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      return err.status === 409 || err.status === 422
+        ? "Alguien cambió las reseñas al mismo tiempo. Recargá la página y probá de nuevo."
+        : err.status === 401 || err.status === 403 || err.status === 404
+          ? "Tu clave de acceso no tiene permiso para guardar (o venció). Salí y entrá con una nueva."
+          : "No se pudo guardar. Revisá la conexión y probá de nuevo.";
+    } finally {
+      ocupado = false;
+      $("resena-submit").disabled = false;
+      renderResenas();
+    }
+  }
+
+  async function guardarResena(e) {
+    e.preventDefault();
+    if (ocupado) return;
+    const d = datosDelForm();
+    const msg = $("resena-msg");
+    $("resena-nombre").classList.toggle("is-invalid", !d.nombre);
+    if (!d.nombre) {
+      setMsg(msg, "Poné el nombre de quien dejó la reseña.", "error");
+      $("resena-nombre").focus();
+      return;
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d.fecha)) d.fecha = hoyIso();
+    if (d.fecha > hoyIso() && !window.confirm("La fecha es en el futuro. ¿Guardar igual?")) return;
+
+    const id = editandoId;
+    if (id) {
+      if (!formSucio()) {
+        resetForm();
+        setMsg(msg, "No había cambios.");
+        return;
+      }
+      setMsg(msg, "Guardando…");
+      const error = await publicarResenas((lista) => lista.map((r) => (r.id === id ? { ...r, ...d } : r)), `edita "${d.nombre}"`);
+      if (error) return setMsg(msg, error, "error");
+      resetForm();
+      setMsg(msg, "Cambios guardados. En 1–2 minutos se ve en la web.", "ok");
+    } else {
+      const dup = resenas.find((r) => normalizar(r.nombre) === normalizar(d.nombre));
+      if (dup && !window.confirm(`Ya hay una reseña de “${dup.nombre}”. ¿Sumar otra igual?`)) return;
+      setMsg(msg, "Publicando…");
+      const nueva = { id: nuevoId(d.nombre), ...d };
+      const error = await publicarResenas((lista) => [nueva, ...lista], `suma "${d.nombre}"`);
+      if (error) return setMsg(msg, error, "error");
+      resetForm();
+      busqueda = "";
+      $("resenas-buscar").value = "";
+      pagina = Math.floor(resenas.findIndex((r) => r.id === nueva.id) / POR_PAGINA) + 1;
+      renderTabla();
+      setMsg(msg, "Reseña publicada. En 1–2 minutos se ve en la web.", "ok");
+    }
+  }
+
+  async function eliminar(r) {
+    if (ocupado) return;
+    if (!window.confirm(`¿Eliminar la reseña de ${r.nombre}?\n\nSe saca de la web y baja el total de reseñas.`)) return;
+    const msg = $("resena-msg");
+    setMsg(msg, "Eliminando…");
+    const error = await publicarResenas((lista) => lista.filter((x) => x.id !== r.id), `elimina "${r.nombre}"`);
+    if (error) return setMsg(msg, error, "error");
+    if (editandoId === r.id) resetForm();
+    setMsg(msg, `Se eliminó la reseña de ${r.nombre}.`, "ok");
+  }
+
+  // ----- Vista -----
+  function renderResenas() {
+    const { total, promedioTexto } = R.resumenResenas(resenas);
+    $("resenas-count").textContent = total ? String(total) : "";
+    $("resenas-summary").textContent = total
+      ? `${total} ${total === 1 ? "reseña" : "reseñas"} · promedio ${promedioTexto} ★ · Así se muestra en la web (total, promedio y tarjetas).`
+      : "Todavía no hay reseñas cargadas.";
+    renderTabla();
+  }
+
+  function filtradas() {
+    const q = normalizar(busqueda.trim());
+    if (!q) return resenas;
+    return resenas.filter((r) => normalizar(r.nombre).includes(q) || normalizar(r.texto).includes(q));
+  }
+
+  function renderTabla() {
+    const q = normalizar(busqueda.trim());
+    const lista = filtradas();
+    const paginas = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
+    pagina = Math.min(Math.max(1, pagina), paginas);
+    const desde = (pagina - 1) * POR_PAGINA;
+    const visibles = lista.slice(desde, desde + POR_PAGINA);
+
+    const tbody = $("resenas-body");
+    tbody.replaceChildren();
+    if (!visibles.length) {
+      const tr = document.createElement("tr");
+      tr.className = "adm-empty";
+      const td = document.createElement("td");
+      td.colSpan = 5;
+      td.textContent = q ? `No hay reseñas que coincidan con “${busqueda.trim()}”.` : "Todavía no hay reseñas.";
+      tr.append(td);
+      tbody.append(tr);
+    }
+    visibles.forEach((r) => {
+      const tr = document.createElement("tr");
+      tr.classList.toggle("is-editing", r.id === editandoId);
+
+      const nombre = document.createElement("td");
+      nombre.className = "adm-r-nombre";
+      nombre.append(resaltar(r.nombre, q));
+
+      const stars = document.createElement("td");
+      stars.className = "adm-r-stars";
+      stars.textContent = R.estrellasTexto(r.estrellas);
+      stars.setAttribute("aria-label", `${r.estrellas} de 5`);
+      stars.title = `${r.estrellas} de 5`;
+
+      const texto = document.createElement("td");
+      const div = document.createElement("div");
+      div.className = "adm-r-texto";
+      if (r.texto) {
+        div.append(resaltar(r.texto, q));
+        div.title = r.texto;
+      } else {
+        div.textContent = "(solo estrellas, sin texto)";
+        div.style.fontStyle = "italic";
+      }
+      texto.append(div);
+
+      const fecha = document.createElement("td");
+      fecha.className = "adm-r-fecha";
+      fecha.textContent = formatFecha(r.fecha);
+      fecha.title = R.fechaRelativa(r.fecha);
+
+      const acciones = document.createElement("td");
+      acciones.className = "adm-r-acciones";
+      const btnEditar = document.createElement("button");
+      btnEditar.type = "button";
+      btnEditar.className = "adm-btn adm-btn--sm";
+      btnEditar.textContent = "Editar";
+      btnEditar.disabled = ocupado;
+      btnEditar.setAttribute("aria-label", `Editar reseña de ${r.nombre}`);
+      btnEditar.addEventListener("click", () => editar(r));
+      const btnBorrar = document.createElement("button");
+      btnBorrar.type = "button";
+      btnBorrar.className = "adm-btn adm-btn--sm adm-btn--danger";
+      btnBorrar.textContent = "Eliminar";
+      btnBorrar.disabled = ocupado;
+      btnBorrar.setAttribute("aria-label", `Eliminar reseña de ${r.nombre}`);
+      btnBorrar.addEventListener("click", () => eliminar(r));
+      acciones.append(btnEditar, btnBorrar);
+
+      tr.append(nombre, stars, texto, fecha, acciones);
+      tbody.append(tr);
+    });
+
+    $("pager-info").textContent = lista.length
+      ? `Mostrando ${desde + 1}–${desde + visibles.length} de ${lista.length}${q ? ` (filtradas de ${resenas.length})` : ""}`
+      : "";
+    renderPager(paginas);
+  }
+
+  function renderPager(paginas) {
+    const cont = $("pager-btns");
+    cont.replaceChildren();
+    if (paginas <= 1) return;
+    const boton = (texto, destino, opts = {}) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "adm-btn";
+      b.textContent = texto;
+      b.disabled = !!opts.disabled;
+      if (opts.label) b.setAttribute("aria-label", opts.label);
+      if (destino === pagina && !opts.label) b.setAttribute("aria-current", "page");
+      b.addEventListener("click", () => {
+        pagina = destino;
+        renderTabla();
+      });
+      cont.append(b);
+    };
+    boton("‹", pagina - 1, { disabled: pagina === 1, label: "Página anterior" });
+    // 1 … 4 5 6 … 10
+    let anterior = 0;
+    for (let n = 1; n <= paginas; n++) {
+      if (n !== 1 && n !== paginas && Math.abs(n - pagina) > 1) continue;
+      if (n - anterior > 1) {
+        const gap = document.createElement("span");
+        gap.className = "adm-pager__gap";
+        gap.textContent = "…";
+        cont.append(gap);
+      }
+      boton(String(n), n);
+      anterior = n;
+    }
+    boton("›", pagina + 1, { disabled: pagina === paginas, label: "Página siguiente" });
+  }
+
+  // ----- Eventos -----
+  $("resena-form").addEventListener("submit", guardarResena);
+  $("resena-cancel").addEventListener("click", () => {
+    if (formSucio() && !window.confirm("¿Descartar los cambios de esta reseña?")) return;
+    resetForm();
+    setMsg($("resena-msg"), "");
+  });
+  $("resena-nombre").addEventListener("input", () => $("resena-nombre").classList.remove("is-invalid"));
+  document.querySelectorAll("#resena-estrellas input").forEach((input) =>
+    input.addEventListener("change", () => setEstrellas(Number(input.value)))
+  );
+  starLabels.forEach((label, i) => label.addEventListener("mouseenter", () => pintarEstrellas(i + 1)));
+  document.querySelector(".adm-stars__row").addEventListener("mouseleave", () => pintarEstrellas(estrellasElegidas()));
+  $("resenas-buscar").addEventListener("input", (e) => {
+    busqueda = e.target.value;
+    pagina = 1;
+    renderTabla();
+  });
+  resetForm();
+
+  // ---------- Pestañas ----------
+  const TABS = { precios: "Precios", resenas: "Reseñas" };
+  function setTab(name, focus) {
+    Object.keys(TABS).forEach((t) => {
+      const activo = t === name;
+      $(`tab-${t}`).setAttribute("aria-selected", String(activo));
+      $(`tab-${t}`).tabIndex = activo ? 0 : -1;
+      $(`panel-${t}`).hidden = !activo;
+    });
+    $("editor-title").textContent = TABS[name];
+    if (focus) $(`tab-${name}`).focus();
+    try {
+      history.replaceState(null, "", name === "precios" ? location.pathname : `#${name}`);
+    } catch (e) {
+      /* sin history: no pasa nada */
+    }
+  }
+  Object.keys(TABS).forEach((t) => $(`tab-${t}`).addEventListener("click", () => setTab(t)));
+  document.querySelector(".adm-tabs").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    const names = Object.keys(TABS);
+    const actual = names.findIndex((t) => $(`tab-${t}`).getAttribute("aria-selected") === "true");
+    setTab(names[(actual + (e.key === "ArrowRight" ? 1 : names.length - 1)) % names.length], true);
+  });
+  setTab(location.hash === "#resenas" ? "resenas" : "precios");
+
   // ---------- Sesión ----------
   let editorReady = false;
   async function enterEditor() {
@@ -381,6 +784,10 @@
     await loadPrices();
     show("view-editor");
     loadHistory();
+    loadResenas().catch((err) => {
+      console.error(err);
+      $("resenas-summary").textContent = "No se pudieron cargar las reseñas. Recargá la página.";
+    });
   }
 
   async function login(access, remember) {
@@ -413,7 +820,7 @@
   });
 
   $("logout-btn").addEventListener("click", () => {
-    if (changedFields().length && !window.confirm("Tenés cambios sin guardar. ¿Salir igual?")) return;
+    if ((changedFields().length || formSucio()) && !window.confirm("Tenés cambios sin guardar. ¿Salir igual?")) return;
     writeStored(null);
     token = "";
     $("login-token").value = "";
@@ -424,7 +831,7 @@
   $("discard-btn").addEventListener("click", () => fillForm(baseline));
 
   window.addEventListener("beforeunload", (e) => {
-    if (changedFields().length) {
+    if (changedFields().length || formSucio() || ocupado) {
       e.preventDefault();
       e.returnValue = "";
     }

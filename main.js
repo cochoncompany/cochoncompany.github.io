@@ -14,17 +14,33 @@
       const reviewsTrack = document.getElementById("reviewsTrack");
       const reviewsMarquee = document.querySelector(".reviews__marquee");
       if (reviewsTrack) {
-        const overflowingParagraphs = [...reviewsTrack.querySelectorAll(".review-card p")].filter(
-          (p) => p.scrollHeight - p.clientHeight > 2
-        );
+        // Se vuelve a correr cuando resenas.js reemplaza las tarjetas.
+        const setupReviewsTrack = () => {
+          reviewsTrack.querySelectorAll(":scope > [aria-hidden='true']").forEach((clone) => clone.remove());
+          reviewsMarquee?.classList.remove("is-paused");
 
-        overflowingParagraphs.forEach((p) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "review-card__more";
-          btn.textContent = "Leer más";
-          p.insertAdjacentElement("afterend", btn);
-        });
+          const overflowingParagraphs = [...reviewsTrack.querySelectorAll(".review-card p")].filter(
+            (p) => p.scrollHeight - p.clientHeight > 2
+          );
+
+          overflowingParagraphs.forEach((p) => {
+            if (p.nextElementSibling?.classList.contains("review-card__more")) return;
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "review-card__more";
+            btn.textContent = "Leer más";
+            p.insertAdjacentElement("afterend", btn);
+          });
+
+          [...reviewsTrack.children].forEach((card) => {
+            const clone = card.cloneNode(true);
+            clone.setAttribute("aria-hidden", "true");
+            reviewsTrack.appendChild(clone);
+          });
+        };
+
+        setupReviewsTrack();
+        document.addEventListener("resenas:render", setupReviewsTrack);
 
         reviewsTrack.addEventListener("click", (event) => {
           const btn = event.target.closest(".review-card__more");
@@ -36,12 +52,6 @@
             "is-paused",
             !!reviewsTrack.querySelector(".review-card.is-expanded")
           );
-        });
-
-        [...reviewsTrack.children].forEach((card) => {
-          const clone = card.cloneNode(true);
-          clone.setAttribute("aria-hidden", "true");
-          reviewsTrack.appendChild(clone);
         });
       }
 

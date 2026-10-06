@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Precios · Cochon & Co.</title>
+    <title>Panel · Cochon & Co.</title>
     <link rel="icon" href="assets/img/favicon/favicon.ico" sizes="any" />
     <link rel="stylesheet" href="styles.css" />
     <style>
@@ -122,7 +122,8 @@
         font-size: 0.9rem;
         color: var(--muted);
       }
-      .adm input {
+      .adm input,
+      .adm textarea {
         font: inherit;
         color: var(--text);
         background: rgba(0, 0, 0, 0.25);
@@ -131,7 +132,8 @@
         padding: 11px 12px;
         width: 100%;
       }
-      .adm input:focus {
+      .adm input:focus,
+      .adm textarea:focus {
         outline: 2px solid var(--accent);
         outline-offset: 1px;
         border-color: transparent;
@@ -211,6 +213,7 @@
         margin-bottom: 14px;
       }
       .adm-table-wrap {
+        position: relative;
         overflow-x: auto;
         border: 1px solid var(--line);
         border-radius: var(--radius-sm);
@@ -318,6 +321,249 @@
       [hidden] {
         display: none !important;
       }
+      .adm-visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      /* Pestañas */
+      .adm-tabs {
+        display: flex;
+        gap: 6px;
+        padding: 4px;
+        margin-bottom: 20px;
+        width: fit-content;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--panel);
+      }
+      .adm-tab {
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        border: 0;
+        border-radius: 999px;
+        padding: 9px 18px;
+        color: var(--muted);
+        background: transparent;
+        transition: background-color 0.15s ease, color 0.15s ease;
+      }
+      .adm-tab:hover {
+        color: var(--text);
+      }
+      .adm-tab[aria-selected="true"] {
+        background: var(--accent);
+        color: #1b120c;
+      }
+      .adm-tab__count {
+        font-weight: 600;
+        opacity: 0.75;
+      }
+      .adm-tab__count:not(:empty)::before {
+        content: "· ";
+      }
+      .adm-last {
+        margin-bottom: 16px;
+      }
+
+      /* Reseñas: formulario */
+      .adm-rform {
+        display: grid;
+        gap: 16px;
+      }
+      .adm-rform.is-editing {
+        border-color: var(--hot);
+        box-shadow: 0 0 0 1px var(--hot);
+      }
+      .adm-rform__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .adm-rform h2 {
+        font-size: 1.15rem;
+      }
+      .adm-rform__row {
+        display: grid;
+        grid-template-columns: 1fr 200px;
+        gap: 14px;
+      }
+      @media (max-width: 560px) {
+        .adm-rform__row {
+          grid-template-columns: 1fr;
+        }
+      }
+      .adm textarea {
+        resize: vertical;
+        min-height: 96px;
+        line-height: 1.5;
+      }
+      .adm input[type="date"] {
+        color-scheme: dark;
+      }
+      .adm-opt {
+        font-size: 0.8rem;
+        opacity: 0.7;
+      }
+      .adm-rform__foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .adm-stars {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+      .adm-stars legend {
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin-bottom: 6px;
+        padding: 0;
+      }
+      .adm-stars__row {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+      }
+      .adm .adm-stars input {
+        position: absolute;
+        opacity: 0;
+        width: 1px;
+        height: 1px;
+      }
+      .adm .adm-stars label {
+        display: block;
+        font-size: 1.9rem;
+        line-height: 1;
+        padding: 2px 3px;
+        cursor: pointer;
+        color: rgba(255, 240, 226, 0.18);
+        transition: color 0.12s ease, transform 0.12s ease;
+      }
+      .adm .adm-stars label.is-on {
+        color: var(--accent-2);
+      }
+      .adm .adm-stars label:hover {
+        transform: scale(1.12);
+      }
+      .adm-stars input:focus-visible + label {
+        outline: 2px solid var(--accent);
+        border-radius: 6px;
+      }
+      .adm-stars__value {
+        margin-left: 10px;
+      }
+
+      /* Reseñas: tabla */
+      .adm-rlist__head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .adm-search {
+        flex: 1 1 260px;
+        max-width: 340px;
+      }
+      .adm-rtable {
+        min-width: 680px;
+        font-variant-numeric: normal;
+      }
+      .adm-rtable td {
+        vertical-align: top;
+        padding: 12px 10px;
+      }
+      .adm-rtable .adm-r-nombre {
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .adm-rtable .adm-r-stars {
+        color: var(--accent-2);
+        white-space: nowrap;
+        letter-spacing: 1px;
+      }
+      .adm-rtable .adm-r-texto {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.45;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        max-width: 380px;
+      }
+      .adm-rtable .adm-r-fecha {
+        white-space: nowrap;
+        font-size: 0.88rem;
+      }
+      .adm-rtable .adm-r-acciones {
+        white-space: nowrap;
+        text-align: right;
+      }
+      .adm-rtable tr.is-editing td {
+        background: rgba(255, 122, 47, 0.1);
+      }
+      .adm-rtable mark {
+        background: rgba(255, 196, 120, 0.3);
+        color: inherit;
+        border-radius: 3px;
+      }
+      .adm-btn--sm {
+        padding: 6px 12px;
+        font-size: 0.82rem;
+      }
+      .adm-btn--danger:not(:disabled):hover {
+        border-color: #ff6b6b;
+        color: #ff9c86;
+      }
+      .adm-btn--sm + .adm-btn--sm {
+        margin-left: 6px;
+      }
+      .adm-empty td {
+        text-align: center;
+        padding: 28px 10px;
+        color: var(--muted);
+      }
+
+      /* Paginación */
+      .adm-pager {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      .adm-pager__btns {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      .adm-pager__btns .adm-btn {
+        min-width: 38px;
+        padding: 7px 10px;
+        font-size: 0.88rem;
+      }
+      .adm-pager__btns .adm-btn[aria-current="page"] {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #1b120c;
+      }
+      .adm-pager__gap {
+        align-self: center;
+        padding: 0 4px;
+        color: var(--muted);
+      }
     </style>
   </head>
   <body>
@@ -329,8 +575,8 @@
       <section id="view-login" class="adm__card adm-login" hidden>
         <img class="adm-login__logo" src="assets/img/logo/cochon-co-logo.webp" alt="" />
         <span class="adm__brand">Cochon & Co.</span>
-        <h1>Panel de precios</h1>
-        <p class="adm__muted adm-login__sub">Lo que guardes acá se publica en la web.</p>
+        <h1>Panel de administración</h1>
+        <p class="adm__muted adm-login__sub">Precios y reseñas. Lo que guardes acá se publica en la web.</p>
         <form id="login-form">
           <label>Tu nombre<input type="text" id="login-name" autocomplete="name" placeholder="Ej: Tu nombre" /></label>
           <label>Clave de acceso<input type="password" id="login-token" autocomplete="current-password" required /></label>
@@ -351,14 +597,23 @@
         <header class="adm-head">
           <div>
             <span class="adm__brand">Cochon & Co.</span>
-            <h1>Precios</h1>
-            <p class="adm__muted" id="last-update"></p>
+            <h1 id="editor-title">Precios</h1>
           </div>
           <div class="adm-head__who">
             <span class="adm__muted" id="who"></span>
             <button class="adm-btn" type="button" id="logout-btn">Salir</button>
           </div>
         </header>
+
+        <nav class="adm-tabs" role="tablist" aria-label="Secciones del panel">
+          <button class="adm-tab" type="button" role="tab" id="tab-precios" aria-controls="panel-precios" aria-selected="true">Precios</button>
+          <button class="adm-tab" type="button" role="tab" id="tab-resenas" aria-controls="panel-resenas" aria-selected="false" tabindex="-1">
+            Reseñas <span class="adm-tab__count" id="resenas-count"></span>
+          </button>
+        </nav>
+
+        <div id="panel-precios" role="tabpanel" aria-labelledby="tab-precios">
+        <p class="adm__muted adm-last" id="last-update"></p>
 
         <div class="adm__card adm-help adm__muted">
           <ul style="margin: 0; padding-left: 18px">
@@ -425,14 +680,78 @@
             </div>
           </div>
         </div>
+        </div>
+
+        <div id="panel-resenas" role="tabpanel" aria-labelledby="tab-resenas" hidden>
+          <p class="adm__muted adm-last" id="resenas-summary"></p>
+
+          <form class="adm__card adm-rform" id="resena-form" novalidate>
+            <div class="adm-rform__head">
+              <h2 id="resena-form-title">Sumar reseña</h2>
+              <button class="adm-btn adm-btn--sm" type="button" id="resena-cancel" hidden>Cancelar edición</button>
+            </div>
+            <div class="adm-rform__row">
+              <label>Nombre<input type="text" id="resena-nombre" maxlength="80" autocomplete="off" placeholder="Ej: Juana Pérez" required /></label>
+              <label>Fecha<input type="date" id="resena-fecha" required /></label>
+            </div>
+            <fieldset class="adm-stars" id="resena-estrellas">
+              <legend>Puntuación</legend>
+              <div class="adm-stars__row">
+                <input type="radio" name="estrellas" id="est-1" value="1" /><label for="est-1" title="1 estrella">★</label>
+                <input type="radio" name="estrellas" id="est-2" value="2" /><label for="est-2" title="2 estrellas">★</label>
+                <input type="radio" name="estrellas" id="est-3" value="3" /><label for="est-3" title="3 estrellas">★</label>
+                <input type="radio" name="estrellas" id="est-4" value="4" /><label for="est-4" title="4 estrellas">★</label>
+                <input type="radio" name="estrellas" id="est-5" value="5" checked /><label for="est-5" title="5 estrellas">★</label>
+                <span class="adm__muted adm-stars__value" id="estrellas-valor">5 de 5</span>
+              </div>
+            </fieldset>
+            <label><span>Reseña <span class="adm-opt">(opcional)</span></span>
+              <textarea id="resena-texto" rows="4" maxlength="1500" placeholder="Lo que escribió el cliente, tal cual."></textarea>
+            </label>
+            <div class="adm-rform__foot">
+              <p class="adm__msg" id="resena-msg" role="status"></p>
+              <button class="adm-btn adm-btn--primary" type="submit" id="resena-submit">Publicar reseña</button>
+            </div>
+          </form>
+
+          <div class="adm-section">
+            <div class="adm-rlist__head">
+              <h2>Todas las reseñas</h2>
+              <label class="adm-search">
+                <span class="adm-visually-hidden">Buscar reseña</span>
+                <input type="search" id="resenas-buscar" placeholder="Buscar por nombre o texto…" autocomplete="off" />
+              </label>
+            </div>
+            <div class="adm-table-wrap">
+              <table class="adm-table adm-rtable">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Puntuación</th>
+                    <th scope="col">Reseña</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col"><span class="adm-visually-hidden">Acciones</span></th>
+                  </tr>
+                </thead>
+                <tbody id="resenas-body"></tbody>
+              </table>
+            </div>
+            <nav class="adm-pager" aria-label="Páginas de reseñas">
+              <span class="adm__muted" id="pager-info"></span>
+              <div class="adm-pager__btns" id="pager-btns"></div>
+            </nav>
+          </div>
+        </div>
       </section>
     </main>
 
     <script>
       // El panel lee precios.json desde GitHub (versión exacta), no desde la web publicada.
       window.COCHON_PRECIOS_SKIP_FETCH = true;
+      window.COCHON_RESENAS_SKIP_FETCH = true;
     </script>
     <script src="precios.js?v=20261004"></script>
-    <script src="admin.js?v=20261004"></script>
+    <script src="resenas.js?v=20261006"></script>
+    <script src="admin.js?v=20261006"></script>
   </body>
 </html>
