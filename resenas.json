@@ -1,6 +1,13 @@
 {
   "resenas": [
     {
+      "id": "ingrid-gomez-mvqmiozc",
+      "nombre": "Ingrid Gomez",
+      "estrellas": 5,
+      "texto": "Prolijos en horarios, el pernil lo mejor, los pancitos y las salsas fue todo un 10/10",
+      "fecha": "2026-10-20"
+    },
+    {
       "id": "olive-florit-mvqmi68y",
       "nombre": "Olive Florit",
       "estrellas": 5,
