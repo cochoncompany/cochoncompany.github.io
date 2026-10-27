@@ -1,6 +1,13 @@
 {
   "resenas": [
     {
+      "id": "andrea-lattanzi-mvqmfxt5",
+      "nombre": "Andrea Lattanzi",
+      "estrellas": 5,
+      "texto": "Muy rico !! Bien condimentado. Alcanzo perfecto y sobre.\nMuy buena presentación!!",
+      "fecha": "2026-10-06"
+    },
+    {
       "id": "enzo-galindo-percaz",
       "nombre": "Enzo Galindo Percaz",
       "estrellas": 5,
