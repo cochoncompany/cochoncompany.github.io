@@ -1,6 +1,13 @@
 {
   "resenas": [
     {
+      "id": "olive-florit-mvqmi68y",
+      "nombre": "Olive Florit",
+      "estrellas": 5,
+      "texto": "Los perniles exquisitos, todo impecable!! Mejor no podria haber sido. Gracias!!",
+      "fecha": "2026-10-13"
+    },
+    {
       "id": "andrea-lattanzi-mvqmfxt5",
       "nombre": "Andrea Lattanzi",
       "estrellas": 5,
