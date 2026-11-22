@@ -9,92 +9,92 @@
     },
     "10": {
       "bondiola": null,
-      "cerdo": 123000,
-      "ternera": 170000,
+      "cerdo": 130000,
+      "ternera": 188000,
       "panes": 40,
       "salsasIncluidas": 2
     },
     "15": {
       "bondiola": null,
-      "cerdo": 147000,
-      "ternera": 245000,
+      "cerdo": 154000,
+      "ternera": 231000,
       "panes": 60,
       "salsasIncluidas": 3
     },
     "20": {
       "bondiola": null,
-      "cerdo": 171000,
-      "ternera": 280000,
+      "cerdo": 172000,
+      "ternera": 295000,
       "panes": 80,
       "salsasIncluidas": 4
     },
     "25": {
       "bondiola": null,
-      "cerdo": 185000,
-      "ternera": 310000,
+      "cerdo": 200000,
+      "ternera": 340000,
       "panes": 100,
       "salsasIncluidas": 4
     },
     "30": {
       "bondiola": null,
-      "cerdo": 243000,
-      "ternera": 366900,
+      "cerdo": 258000,
+      "ternera": 410000,
       "panes": 120,
       "salsasIncluidas": 5
     },
     "35": {
       "bondiola": null,
-      "cerdo": 264000,
-      "ternera": 382400,
+      "cerdo": 276000,
+      "ternera": 446000,
       "panes": 140,
       "salsasIncluidas": 5
     },
     "40": {
       "bondiola": null,
       "cerdo": 326000,
-      "ternera": 405900,
+      "ternera": 470000,
       "panes": 160,
       "salsasIncluidas": 6
     },
     "50": {
       "bondiola": null,
-      "cerdo": 386000,
-      "ternera": 480000,
+      "cerdo": 420000,
+      "ternera": 520000,
       "panes": 200,
       "salsasIncluidas": 6
     },
     "60": {
       "bondiola": null,
-      "cerdo": 430000,
-      "ternera": 590000,
+      "cerdo": 486000,
+      "ternera": 630000,
       "panes": 240,
       "salsasIncluidas": 7
     },
     "70": {
       "bondiola": null,
-      "cerdo": 510000,
-      "ternera": 663000,
+      "cerdo": 540000,
+      "ternera": 730000,
       "panes": 280,
       "salsasIncluidas": 7
     },
     "80": {
       "bondiola": null,
-      "cerdo": 569000,
-      "ternera": 732000,
+      "cerdo": 625000,
+      "ternera": 906000,
       "panes": 320,
       "salsasIncluidas": 8
     },
     "90": {
       "bondiola": null,
-      "cerdo": 623000,
-      "ternera": 821000,
+      "cerdo": 720000,
+      "ternera": 1000000,
       "panes": 360,
       "salsasIncluidas": 8
     },
     "100": {
       "bondiola": null,
-      "cerdo": 689000,
-      "ternera": 970000,
+      "cerdo": 780000,
+      "ternera": 1070000,
       "panes": 400,
       "salsasIncluidas": 9
     }
@@ -105,7 +105,7 @@
   },
   "precioSalsaExtra": 5000,
   "vegetariano": {
-    "precioPorPorcion": 40000,
+    "precioPorPorcion": 60000,
     "personasMinPorPorcion": 5,
     "personasMaxPorPorcion": 6,
     "panesPorPorcion": "20 a 25"
